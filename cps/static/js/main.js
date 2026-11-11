@@ -428,7 +428,7 @@ $(function() {
     });
 
     if ($(".load-more").length && $(".next").length) {
-        var $loadMore = $(".load-more .row.display-flex").infiniteScroll({
+        var $loadMore = $(".load-more .cw-grid").infiniteScroll({
             debug: false,
             // selector for the paged navigation (it will be hidden)
             path : ".next",
@@ -439,7 +439,6 @@ $(function() {
         });
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
             $(".pagination").addClass("d-none").html(() => $(response).find(".pagination").html());
-            $(".load-more .row.display-flex").isotope( "appended", $(data), null );
         });
 
     }

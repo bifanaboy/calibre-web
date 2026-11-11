@@ -105,7 +105,7 @@
     </div>
     <div class="mb-3">
       <label class="form-label" for="rating">{{_('Rating')}}</label>
-      <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
+      <input type="number" name="rating" id="rating" class="form-control" min="0" max="5" step="1" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
     </div>
       <div class="mb-3">
       <label class="form-label" for="comments">{{_('Description')}}</label>
@@ -303,7 +303,6 @@
 
 </script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
-<script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/get_meta.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>

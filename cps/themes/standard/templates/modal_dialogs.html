@@ -38,7 +38,7 @@
 {% endmacro %}
 {% macro delete_book(allow) %}
 {% if allow %}
-<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="metaDeleteLabel">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="metaDeleteLabel">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-danger text-center">
@@ -67,7 +67,7 @@
 {% endif %}
 {% endmacro %}
 {% macro filechooser_modal() %}
-<div class="modal fade" id="fileModal" role="dialog" aria-labelledby="metafileLabel">
+<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="metafileLabel">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header text-center">
@@ -104,7 +104,7 @@
 {% endmacro %}
 
 {% macro delete_confirm_modal() %}
-<div id="GeneralDeleteModal" class="modal fade" role="Dialog">
+<div id="GeneralDeleteModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header bg-danger text-center">
@@ -122,7 +122,7 @@
 {% endmacro %}
 
 {% macro change_confirm_modal() %}
-<div id="GeneralChangeModal" class="modal fade" role="Dialog">
+<div id="GeneralChangeModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header text-center">

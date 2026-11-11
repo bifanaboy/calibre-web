@@ -131,11 +131,11 @@
     <div class="row">
       <div class="mb-3 col-sm-6">
         <label class="form-label" for="ratinghigh">{{_('Rating Above')}}</label>
-        <input type="number"  name="ratinghigh" id="ratinghigh" class="rating input-lg" data-clearable="" >
+        <input type="number" name="ratinghigh" id="ratinghigh" class="form-control" min="0" max="5" step="1">
       </div>
         <div class="mb-3 col-sm-6">
           <label class="form-label" for="ratinglow">{{_('Rating Below')}}</label>
-          <input type="number"  name="ratinglow" id="ratinglow" class="rating input-lg" data-clearable="" >
+          <input type="number" name="ratinglow" id="ratinglow" class="form-control" min="0" max="5" step="1">
         </div>
     </div>
     <div class="mb-3">
@@ -229,7 +229,6 @@
 <script>
   var language = '{{ current_user.locale }}';
 </script>
-<script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 {% endblock %}

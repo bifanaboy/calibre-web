@@ -6,7 +6,7 @@
   <h2 class="random-books">{{_('Discover (Random Books)')}}</h2>
   <div class="cw-grid">
    {% for entry in random %}
-    {% with show_music=false %}{% include '_book_card.html' %}{% endwith %}
+    {% with show_music=false %}{% include theme('_book_card.html') %}{% endwith %}
     {% endfor %}
   </div>
 </div>
@@ -37,7 +37,7 @@
   <div class="cw-grid">
     {% if entries[0] %}
     {% for entry in entries %}
-      {% with show_music=true %}{% include '_book_card.html' %}{% endwith %}
+      {% with show_music=true %}{% include theme('_book_card.html') %}{% endwith %}
     {% endfor %}
     {% endif %}
   </div>

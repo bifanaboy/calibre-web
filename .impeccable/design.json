@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-11T08:25:07.280667Z",
+  "title": "Design System: Calibre-Web Standard",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Curator Indigo",
+        "canonical": "#4F46E5",
+        "tonalRamp": [
+          "oklch(15% 0.1994 277.0)",
+          "oklch(25% 0.2301 277.0)",
+          "oklch(35% 0.2301 277.0)",
+          "oklch(45% 0.2301 277.0)",
+          "oklch(55% 0.2301 277.0)",
+          "oklch(65% 0.2301 277.0)",
+          "oklch(75% 0.2301 277.0)",
+          "oklch(95% 0.0575 277.0)"
+        ]
+      },
+      "primary-hover": {
+        "role": "primary",
+        "displayName": "Indigo Hover",
+        "canonical": "#4338CA",
+        "tonalRamp": [
+          "oklch(15% 0.1860 277.0)",
+          "oklch(25% 0.2146 277.0)",
+          "oklch(35% 0.2146 277.0)",
+          "oklch(45% 0.2146 277.0)",
+          "oklch(55% 0.2146 277.0)",
+          "oklch(65% 0.2146 277.0)",
+          "oklch(75% 0.2146 277.0)",
+          "oklch(95% 0.0536 277.0)"
+        ]
+      },
+      "primary-ink": {
+        "role": "neutral",
+        "displayName": "Light Action Ink",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.9)",
+          "oklch(25% 0.0000 89.9)",
+          "oklch(35% 0.0000 89.9)",
+          "oklch(45% 0.0000 89.9)",
+          "oklch(55% 0.0000 89.9)",
+          "oklch(65% 0.0000 89.9)",
+          "oklch(75% 0.0000 89.9)",
+          "oklch(95% 0.0000 89.9)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#FAFAF9",
+        "tonalRamp": [
+          "oklch(15% 0.0011 106.4)",
+          "oklch(25% 0.0013 106.4)",
+          "oklch(35% 0.0013 106.4)",
+          "oklch(45% 0.0013 106.4)",
+          "oklch(55% 0.0013 106.4)",
+          "oklch(65% 0.0013 106.4)",
+          "oklch(75% 0.0013 106.4)",
+          "oklch(95% 0.0003 106.4)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface White",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.9)",
+          "oklch(25% 0.0000 89.9)",
+          "oklch(35% 0.0000 89.9)",
+          "oklch(45% 0.0000 89.9)",
+          "oklch(55% 0.0000 89.9)",
+          "oklch(65% 0.0000 89.9)",
+          "oklch(75% 0.0000 89.9)",
+          "oklch(95% 0.0000 89.9)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Stone Ink",
+        "canonical": "#1C1917",
+        "tonalRamp": [
+          "oklch(15% 0.0053 56.0)",
+          "oklch(25% 0.0061 56.0)",
+          "oklch(35% 0.0061 56.0)",
+          "oklch(45% 0.0061 56.0)",
+          "oklch(55% 0.0061 56.0)",
+          "oklch(65% 0.0061 56.0)",
+          "oklch(75% 0.0061 56.0)",
+          "oklch(95% 0.0015 56.0)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Stone",
+        "canonical": "#78716C",
+        "tonalRamp": [
+          "oklch(15% 0.0101 58.1)",
+          "oklch(25% 0.0116 58.1)",
+          "oklch(35% 0.0116 58.1)",
+          "oklch(45% 0.0116 58.1)",
+          "oklch(55% 0.0116 58.1)",
+          "oklch(65% 0.0116 58.1)",
+          "oklch(75% 0.0116 58.1)",
+          "oklch(95% 0.0029 58.1)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Stone Border",
+        "canonical": "#E7E5E4",
+        "tonalRamp": [
+          "oklch(15% 0.0022 48.7)",
+          "oklch(25% 0.0026 48.7)",
+          "oklch(35% 0.0026 48.7)",
+          "oklch(45% 0.0026 48.7)",
+          "oklch(55% 0.0026 48.7)",
+          "oklch(65% 0.0026 48.7)",
+          "oklch(75% 0.0026 48.7)",
+          "oklch(95% 0.0006 48.7)"
+        ]
+      },
+      "warm-surface": {
+        "role": "neutral",
+        "displayName": "Warm Stone",
+        "canonical": "#F5F0E8",
+        "tonalRamp": [
+          "oklch(15% 0.0103 79.8)",
+          "oklch(25% 0.0119 79.8)",
+          "oklch(35% 0.0119 79.8)",
+          "oklch(45% 0.0119 79.8)",
+          "oklch(55% 0.0119 79.8)",
+          "oklch(65% 0.0119 79.8)",
+          "oklch(75% 0.0119 79.8)",
+          "oklch(95% 0.0030 79.8)"
+        ]
+      },
+      "night": {
+        "role": "neutral",
+        "displayName": "Night Stone",
+        "canonical": "#1C1917",
+        "tonalRamp": [
+          "oklch(15% 0.0053 56.0)",
+          "oklch(25% 0.0061 56.0)",
+          "oklch(35% 0.0061 56.0)",
+          "oklch(45% 0.0061 56.0)",
+          "oklch(55% 0.0061 56.0)",
+          "oklch(65% 0.0061 56.0)",
+          "oklch(75% 0.0061 56.0)",
+          "oklch(95% 0.0015 56.0)"
+        ]
+      },
+      "night-surface": {
+        "role": "neutral",
+        "displayName": "Night Surface",
+        "canonical": "#292524",
+        "tonalRamp": [
+          "oklch(15% 0.0054 34.3)",
+          "oklch(25% 0.0063 34.3)",
+          "oklch(35% 0.0063 34.3)",
+          "oklch(45% 0.0063 34.3)",
+          "oklch(55% 0.0063 34.3)",
+          "oklch(65% 0.0063 34.3)",
+          "oklch(75% 0.0063 34.3)",
+          "oklch(95% 0.0016 34.3)"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Night Paper",
+        "canonical": "#F5F5F4",
+        "tonalRamp": [
+          "oklch(15% 0.0011 106.4)",
+          "oklch(25% 0.0013 106.4)",
+          "oklch(35% 0.0013 106.4)",
+          "oklch(45% 0.0013 106.4)",
+          "oklch(55% 0.0013 106.4)",
+          "oklch(65% 0.0013 106.4)",
+          "oklch(75% 0.0013 106.4)",
+          "oklch(95% 0.0003 106.4)"
+        ]
+      },
+      "night-muted": {
+        "role": "neutral",
+        "displayName": "Night Muted Stone",
+        "canonical": "#A8A29E",
+        "tonalRamp": [
+          "oklch(15% 0.0078 56.3)",
+          "oklch(25% 0.0091 56.3)",
+          "oklch(35% 0.0091 56.3)",
+          "oklch(45% 0.0091 56.3)",
+          "oklch(55% 0.0091 56.3)",
+          "oklch(65% 0.0091 56.3)",
+          "oklch(75% 0.0091 56.3)",
+          "oklch(95% 0.0023 56.3)"
+        ]
+      },
+      "night-border": {
+        "role": "neutral",
+        "displayName": "Night Border",
+        "canonical": "#44403C",
+        "tonalRamp": [
+          "oklch(15% 0.0075 67.6)",
+          "oklch(25% 0.0087 67.6)",
+          "oklch(35% 0.0087 67.6)",
+          "oklch(45% 0.0087 67.6)",
+          "oklch(55% 0.0087 67.6)",
+          "oklch(65% 0.0087 67.6)",
+          "oklch(75% 0.0087 67.6)",
+          "oklch(95% 0.0022 67.6)"
+        ]
+      },
+      "night-primary": {
+        "role": "primary",
+        "displayName": "Night Indigo",
+        "canonical": "#818CF8",
+        "tonalRamp": [
+          "oklch(15% 0.1372 276.9)",
+          "oklch(25% 0.1583 276.9)",
+          "oklch(35% 0.1583 276.9)",
+          "oklch(45% 0.1583 276.9)",
+          "oklch(55% 0.1583 276.9)",
+          "oklch(65% 0.1583 276.9)",
+          "oklch(75% 0.1583 276.9)",
+          "oklch(95% 0.0396 276.9)"
+        ]
+      },
+      "night-primary-hover": {
+        "role": "primary",
+        "displayName": "Night Indigo Hover",
+        "canonical": "#A5B4FC",
+        "tonalRamp": [
+          "oklch(15% 0.0903 274.7)",
+          "oklch(25% 0.1041 274.7)",
+          "oklch(35% 0.1041 274.7)",
+          "oklch(45% 0.1041 274.7)",
+          "oklch(55% 0.1041 274.7)",
+          "oklch(65% 0.1041 274.7)",
+          "oklch(75% 0.1041 274.7)",
+          "oklch(95% 0.0260 274.7)"
+        ]
+      },
+      "night-primary-ink": {
+        "role": "neutral",
+        "displayName": "Night Action Ink",
+        "canonical": "#1C1917",
+        "tonalRamp": [
+          "oklch(15% 0.0053 56.0)",
+          "oklch(25% 0.0061 56.0)",
+          "oklch(35% 0.0061 56.0)",
+          "oklch(45% 0.0061 56.0)",
+          "oklch(55% 0.0061 56.0)",
+          "oklch(65% 0.0061 56.0)",
+          "oklch(75% 0.0061 56.0)",
+          "oklch(95% 0.0015 56.0)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Responsive page and section headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Interface labels and explanatory copy."
+      },
+      "book-title": {
+        "displayName": "Book Title",
+        "purpose": "Primary book metadata beneath a cover."
+      },
+      "label": {
+        "displayName": "Section Label",
+        "purpose": "Small uppercase browse-section labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "light-cover-lift",
+        "value": "0 1px 2px rgba(28,25,23,.06)",
+        "purpose": "Subtle separation for light-theme book-cover images; dark theme uses no shadow."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "576px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "992px"
+      },
+      {
+        "name": "xl",
+        "value": "1200px"
+      },
+      {
+        "name": "xxl",
+        "value": "1400px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "High-contrast action in the current theme.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Download</button>",
+      "css": ".ds-btn-primary{background:var(--cw-accent);border:1px solid var(--cw-accent);border-radius:.375rem;color:var(--cw-accent-ink);padding:.375rem .75rem;font:inherit;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out}.ds-btn-primary:hover,.ds-btn-primary:active{background:var(--cw-accent-hover);border-color:var(--cw-accent-hover);color:var(--cw-accent-ink)}.ds-btn-primary:focus-visible{outline:0;box-shadow:0 0 0 .25rem rgba(var(--bs-primary-rgb),.5)}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Quiet outlined action for cancellation and secondary tasks.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">Cancel</button>",
+      "css": ".ds-btn-secondary{background:transparent;border:1px solid var(--cw-border);border-radius:.375rem;color:var(--cw-text);padding:.375rem .75rem;font:inherit;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out}.ds-btn-secondary:hover,.ds-btn-secondary:active{background:var(--cw-warm);border-color:var(--cw-border);color:var(--cw-text)}.ds-btn-secondary:focus-visible{outline:0;box-shadow:0 0 0 .25rem rgba(var(--bs-primary-rgb),.5)}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "text-input",
+      "description": "Compact search or text field with an indigo focus state.",
+      "html": "<input class=\"ds-input\" type=\"search\" aria-label=\"Search library\" placeholder=\"Search library\">",
+      "css": ".ds-input{background:var(--cw-surface);border:1px solid var(--cw-border);border-radius:.375rem;color:var(--cw-text);font:inherit;padding:.375rem .75rem}.ds-input:focus{border-color:var(--cw-accent);box-shadow:0 0 0 .25rem rgba(var(--bs-primary-rgb),.25);outline:0}"
+    },
+    {
+      "name": "Browse Navigation",
+      "kind": "nav",
+      "refersTo": "browse-navigation",
+      "description": "Surface-led primary navigation with warm hover treatment.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Browse\"><a class=\"ds-nav-brand\" href=\"#\">Calibre-Web</a><a class=\"ds-nav-link\" href=\"#\">Books</a></nav>",
+      "css": ".ds-nav{align-items:center;background:var(--cw-surface);border-bottom:1px solid var(--cw-border);color:var(--cw-text);display:flex;gap:.75rem;padding:.5rem .75rem}.ds-nav-brand{color:var(--cw-text);font-size:1.1rem;font-weight:700;text-decoration:none}.ds-nav-link{border-radius:var(--cw-radius);color:var(--cw-text);padding:.65rem .75rem;text-decoration:none}.ds-nav-link:hover{background:var(--cw-warm);color:var(--cw-text)}.ds-nav-link:focus-visible{outline:auto;outline-offset:2px}"
+    },
+    {
+      "name": "Category Tag",
+      "kind": "chip",
+      "refersTo": "book-tag",
+      "description": "Pill-shaped category or language link, not a selected filter.",
+      "html": "<a class=\"ds-tag\" href=\"#\">Fiction</a>",
+      "css": ".ds-tag{background:transparent;border:1px solid var(--cw-border);border-radius:999px;color:var(--cw-text);display:inline-block;font-size:.75em;font-weight:700;line-height:1;padding:.35em .65em;text-decoration:none;vertical-align:baseline}.ds-tag:hover{color:var(--cw-accent)}.ds-tag:focus-visible{outline:auto;outline-offset:2px}"
+    },
+    {
+      "name": "Book Item",
+      "kind": "card",
+      "refersTo": "book-card",
+      "description": "Cover-first library item with compact title and author metadata.",
+      "html": "<article class=\"ds-book\"><a href=\"#\" aria-label=\"Open book\"><div class=\"ds-cover\" aria-hidden=\"true\">Cover</div></a><div class=\"ds-book-meta\"><a class=\"ds-book-title\" href=\"#\">Book title</a><p class=\"ds-book-author\">Author</p></div></article>",
+      "css": ".ds-book{color:var(--cw-text);display:flex;min-width:0;flex-direction:column}.ds-cover{aspect-ratio:2/3;background:var(--cw-surface);border-radius:8px;box-shadow:var(--cw-shadow);display:grid;place-items:center;color:var(--cw-muted);font-size:.75rem}.ds-book-meta{margin-top:.65rem}.ds-book-title{color:var(--cw-text);font-size:.95rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ds-book-author{color:var(--cw-muted);font-size:.85rem;margin:0}.ds-book a:hover .ds-book-title{color:var(--cw-accent)}.ds-book a:focus-visible{outline:auto;outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Curator’s Desk — precise, editorial, administration-ready.",
+    "overview": "The Standard theme is a quiet working desk for finding, reading, and maintaining a personal Calibre library. Stone neutrals carry the page; indigo identifies actions and linked content; book-cover imagery supplies the strongest editorial character. System typography and familiar Bootstrap controls keep the interface practical rather than ornamental.\n\nLight and dark themes share the same structure, hierarchy, and task flow. Responsive navigation and book grids adapt around the library owner’s current screen without introducing a second visual language.",
+    "keyCharacteristics": [
+      "Warm stone-neutral surfaces with a clear light/dark pairing.",
+      "Indigo actions, visible focus, and consistent SVG iconography.",
+      "Cover-led book browsing with restrained metadata and border-defined structure.",
+      "Familiar, responsive administration controls rather than decorative chrome."
+    ],
+    "rules": [
+      {
+        "name": "The Indigo Action Rule",
+        "body": "Use indigo to identify actions, selected states, and links; do not wash large page regions with it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flat Night Rule",
+        "body": "Dark-theme surfaces remain shadow-free; use the darker surface and border tokens to separate layers.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do reserve indigo for primary actions, linked content, and selected controls.",
+      "Do keep book covers prominent and their metadata compact.",
+      "Do use borders and tonal surfaces for structure before adding shadows.",
+      "Do preserve the light/dark theme pairing across navigation, forms, and dialogs."
+    ],
+    "donts": [
+      "Don’t wrap each book item in another decorative card.",
+      "Don’t add a display font or ornamental type treatment to administration surfaces.",
+      "Don’t use indigo as a large background wash.",
+      "Don’t add shadows to dark-theme surfaces."
+    ]
+  }
+}

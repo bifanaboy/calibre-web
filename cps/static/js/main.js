@@ -15,6 +15,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* global bootstrap */
+
 function getPath() {
     var jsFileLocation = $("script[src*=jquery]").attr("src");  // the js file path
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
@@ -176,11 +178,6 @@ $(document).on('click', '.toggle-password', function (event) {
     }
     var isPassword = passwordInput.attr('type') === 'password';
     passwordInput.attr('type', isPassword ? 'text' : 'password');
-    var icon = button.find('.glyphicon');
-    if (icon.length) {
-        icon.toggleClass('glyphicon-eye-open', !isPassword);
-        icon.toggleClass('glyphicon-eye-close', isPassword);
-    }
     var showLabel = button.attr('data-password-show') || button.attr('aria-label') || button.attr('title');
     var hideLabel = button.attr('data-password-hide') || showLabel;
     var label = isPassword ? hideLabel : showLabel;
@@ -224,13 +221,13 @@ function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
     var $confirm = $("#" + dialogid);
     $("#btnConfirmYes-"+ dialogid).off('click').click(function () {
         yesFn(dataValue);
-        $confirm.modal("hide");
+        bootstrap.Modal.getOrCreateInstance($confirm[0]).hide();
     });
     $("#btnConfirmNo-"+ dialogid).off('click').click(function () {
         if (typeof noFn !== 'undefined') {
             noFn(dataValue);
         }
-        $confirm.modal("hide");
+        bootstrap.Modal.getOrCreateInstance($confirm[0]).hide();
     });
     $.ajax({
         method:"post",
@@ -241,7 +238,7 @@ function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
             $("#text-"+ dialogid).html(data.main);
         }
     });
-    $confirm.modal('show');
+    bootstrap.Modal.getOrCreateInstance($confirm[0]).show();
 }
 
 $("#delete_confirm").click(function(event) {
@@ -264,9 +261,9 @@ $("#delete_confirm").click(function(event) {
                     data.forEach(function(item) {
                         if (!jQuery.isEmptyObject(item)) {
                             if (item.format != "") {
-                                $("button[data-delete-format='"+item.format+"']").addClass('hidden');
+                                $("button[data-delete-format='"+item.format+"']").addClass('d-none');
                             }
-                            $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
+                            $( ".navbar" ).after( '<div class="row text-center" >' +
                                 '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
                                 '</div>');
                         }
@@ -291,11 +288,11 @@ $("#deleteModal").on("show.bs.modal", function(e) {
     var bookId = $(e.relatedTarget).data("delete-id");
     var bookfomat = $(e.relatedTarget).data("delete-format");
     if (bookfomat) {
-        $("#book_format").removeClass('hidden');
-        $("#book_complete").addClass('hidden');
+        $("#book_format").removeClass('d-none');
+        $("#book_complete").addClass('d-none');
     } else {
-        $("#book_complete").removeClass('hidden');
-        $("#book_format").addClass('hidden');
+        $("#book_complete").removeClass('d-none');
+        $("#book_format").addClass('d-none');
     }
     $(e.currentTarget).find("#delete_confirm").data("delete-id", bookId);
     $(e.currentTarget).find("#delete_confirm").data("delete-format", bookfomat);
@@ -322,8 +319,8 @@ $(function() {
     });
 
     function restartTimer() {
-        $("#spinner").addClass("hidden");
-        $("#RestartDialog").modal("hide");
+        $("#spinner").addClass("d-none");
+        bootstrap.Modal.getOrCreateInstance(document.getElementById("RestartDialog")).hide();
     }
 
     function waitForAdminAlive(onAvailable) {
@@ -343,10 +340,12 @@ $(function() {
     function cleanUp() {
         clearInterval(updateTimerID);
         $("#spinner2").hide();
-        $("#DialogFinished").removeClass("hidden");
-        $("#check_for_update").removeClass("hidden");
-        $("#perform_update").addClass("hidden");
-        $("#message").alert("close");
+        $("#DialogFinished").removeClass("d-none");
+        $("#check_for_update").removeClass("d-none");
+        $("#perform_update").addClass("d-none");
+        if ($("#message").length) {
+            bootstrap.Alert.getOrCreateInstance(document.getElementById("message")).close();
+        }
         $("#update_table > tbody > tr").each(function () {
             if ($(this).attr("id") !== "current_version") {
                 $(this).closest("tr").remove();
@@ -403,13 +402,13 @@ $(function() {
                     }
                 });
                 if (data.parentdir !== "") {
-                    $("#parent").removeClass('hidden')
+                    $("#parent").removeClass('d-none')
                 } else {
-                    $("#parent").addClass('hidden')
+                    $("#parent").addClass('d-none')
                 }
                 data.files.forEach(function(entry) {
                     if(entry.type === "dir") {
-                        var type = "<span class=\"glyphicon glyphicon-folder-close\"></span>";
+                        var type = "<svg class=\"cw-ico cw-ico-list\" aria-hidden=\"true\"><use href=\"#cw-i-list\"/></svg>";
                 } else {
                     var type = "";
                 }
@@ -422,14 +421,8 @@ $(function() {
         });
     }
 
-    $(".discover .row.display-flex").isotope({
-        // options
-        itemSelector : ".book",
-        layoutMode : "fitRows"
-    });
-
     if ($(".load-more").length && $(".next").length) {
-        var $loadMore = $(".load-more .row.display-flex").infiniteScroll({
+        var $loadMore = $(".load-more .cw-grid").infiniteScroll({
             debug: false,
             // selector for the paged navigation (it will be hidden)
             path : ".next",
@@ -439,24 +432,7 @@ $(function() {
             //extraScrollPx: 300
         });
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
-            $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
-            if ($("body").hasClass("blur")) {
-                $(" a:not(.dropdown-toggle) ")
-                  .removeAttr("data-toggle");
-            }
-            $(".load-more .row.display-flex").isotope( "appended", $(data), null );
-        });
-
-        // fix for infinite scroll on CaliBlur Theme (#981)
-
-        $(".col-sm-10").bind("scroll", function () {
-            if (
-                $(this).scrollTop() + $(this).innerHeight() >=
-                $(this)[0].scrollHeight - 5
-            ) {
-                $loadMore.infiniteScroll("loadNextPage");
-                window.history.replaceState({}, null, $loadMore.infiniteScroll("getAbsolutePath"));
-            }
+            $(".pagination").addClass("d-none").html(() => $(response).find(".pagination").html());
         });
 
     }
@@ -491,10 +467,10 @@ $(function() {
         var buttonText = $this.html();
         $this.html("...");
         $("#DialogContent").html("");
-        $("#DialogFinished").addClass("hidden");
-        $("#update_error").addClass("hidden");
+        $("#DialogFinished").addClass("d-none");
+        $("#update_error").addClass("d-none");
         if ($("#message").length) {
-            $("#message").alert("close");
+            bootstrap.Alert.getOrCreateInstance(document.getElementById("message")).close();
         }
         $.ajax({
             dataType: "json",
@@ -507,10 +483,10 @@ $(function() {
 
                 if (data.success === true) {
                     if (data.update === true) {
-                        $("#check_for_update").addClass("hidden");
-                        $("#perform_update").removeClass("hidden");
+                        $("#check_for_update").addClass("d-none");
+                        $("#perform_update").removeClass("d-none");
                         $("#update_info")
-                            .removeClass("hidden")
+                            .removeClass("d-none")
                             .find("span").html(data.commit);
 
                         data.history.forEach(function(entry) {
@@ -525,7 +501,7 @@ $(function() {
                 }
 
                 message = "<div id=\"message\" class=\"alert " + cssClass
-                    + " fade in\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\">&times;</a>"
+                    + " fade show alert-dismissible\"><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>"
                     + data.message + "</div>";
 
                 $(message).insertAfter($("#update_table"));
@@ -544,8 +520,8 @@ $(function() {
     });
 
     $("#restart_database").click(function() {
-        $("#DialogHeader").addClass("hidden");
-        $("#DialogFinished").addClass("hidden");
+        $("#DialogHeader").addClass("d-none");
+        $("#DialogFinished").addClass("d-none");
         $("#DialogContent").html("");
         $("#spinner2").show();
         $.ajax({
@@ -557,13 +533,13 @@ $(function() {
             success: function success(data) {
                 $("#spinner2").hide();
                 $("#DialogContent").html(data.text);
-                $("#DialogFinished").removeClass("hidden");
+                $("#DialogFinished").removeClass("d-none");
             }
         });
     });
     $("#metadata_backup").click(function() {
-        $("#DialogHeader").addClass("hidden");
-        $("#DialogFinished").addClass("hidden");
+        $("#DialogHeader").addClass("d-none");
+        $("#DialogFinished").addClass("d-none");
         $("#DialogContent").html("");
         $("#spinner2").show();
         $.ajax({
@@ -574,12 +550,12 @@ $(function() {
             success: function success(data) {
                 $("#spinner2").hide();
                 $("#DialogContent").html(data.text);
-                $("#DialogFinished").removeClass("hidden");
+                $("#DialogFinished").removeClass("d-none");
             }
         });
     });
     $("#perform_update").click(function() {
-        $("#DialogHeader").removeClass("hidden");
+        $("#DialogHeader").removeClass("d-none");
         $("#spinner2").show();
         $.ajax({
             type: "POST",
@@ -614,6 +590,9 @@ $(function() {
 
             $.get(e.relatedTarget.href).done(function(content) {
                 $modalBody.html(content);
+                $modalBody.find('[data-bs-toggle="tooltip"]').each(function() {
+                    bootstrap.Tooltip.getOrCreateInstance(this);
+                });
                 preFilters.remove(useCache);
                 $("#back").remove();
             });
@@ -721,7 +700,7 @@ $(function() {
                     success:function(data) {
                         data.forEach(function(item) {
                             if (!jQuery.isEmptyObject(item)) {
-                                $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
+                                $( ".navbar" ).after( '<div class="row text-center" >' +
                                     '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
                                     '</div>');
                             }
@@ -739,7 +718,7 @@ $(function() {
     function handle_response(data) {
         if (!jQuery.isEmptyObject(data)) {
             data.forEach(function (item) {
-                $(".navbar").after('<div class="row-fluid text-center">' +
+                $(".navbar").after('<div class="row text-center">' +
                     '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                     '</div>');
             });
@@ -747,9 +726,9 @@ $(function() {
     }
 
     $('.collapse').on('shown.bs.collapse', function(){
-        $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+        $(this).parent().find(".cw-ico-plus").attr("class", "cw-ico cw-ico-close").find("use").attr("href", "#cw-i-close");
     }).on('hidden.bs.collapse', function(){
-    $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+        $(this).parent().find(".cw-ico-close").attr("class", "cw-ico cw-ico-plus").find("use").attr("href", "#cw-i-plus");
     });
 
     function changeDbSettings() {
@@ -767,7 +746,7 @@ $(function() {
             data: {config_calibre_dir: $("#config_calibre_dir").val(), csrf_token: $("input[name='csrf_token']").val()},
             success: function success(data) {
                 if ( !data.valid ) {
-                    $("#InvalidDialog").modal('show');
+                    bootstrap.Modal.getOrCreateInstance(document.getElementById("InvalidDialog")).show();
                 }
                 else{
                     if ( data.change ) {
@@ -855,13 +834,9 @@ $(function() {
         }
     });
 
-    $(window).resize(function() {
-        $(".discover .row.display-flex").isotope("layout");
-    });
-
     $("#import_ldap_users").click(function() {
-        $("#DialogHeader").addClass("hidden");
-        $("#DialogFinished").addClass("hidden");
+        $("#DialogHeader").addClass("d-none");
+        $("#DialogFinished").addClass("d-none");
         $("#DialogContent").html("");
         $("#spinner2").show();
         $.ajax({
@@ -872,7 +847,7 @@ $(function() {
             success: function success(data) {
                 $("#spinner2").hide();
                 $("#DialogContent").html(data.text);
-                $("#DialogFinished").removeClass("hidden");
+                $("#DialogFinished").removeClass("d-none");
             }
         });
     });
@@ -881,7 +856,6 @@ $(function() {
         $(this).parent().find("a.author-name").slice($(this).data("authors-max")).toggle();
         $(this).parent().find("span.author-hidden-divider").toggle();
         $(this).html() === $(this).data("collapse-caption") ? $(this).html("(...)") : $(this).html($(this).data("collapse-caption"));
-        $(".discover .row.display-flex").isotope("layout");
     });
 
     $(".update-view").click(function(e) {
@@ -899,4 +873,7 @@ $(function() {
             }
         });
     });
+});
+document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(element) {
+    bootstrap.Tooltip.getOrCreateInstance(element);
 });

@@ -1,6 +1,7 @@
 {% extends theme("layout.html") %}
+{% from 'icons.html' import icon %}
 {% macro display_bool_setting(setting_value) -%}
-  {% if setting_value %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
+  {% if setting_value %}{{ icon('check') }}{% else %}{{ icon('x') }}{% endif %}
 {%- endmacro %}
 {% block body %}
 <div class="container-fluid">
@@ -8,22 +9,22 @@
     <div class="col">
       <h2>{{_('Users')}}</h2>
     {% if allUser.__len__() < 10 %}
-      <table class="table table-striped" id="table_user">
+      <table class="table table-hover align-middle table-striped" id="table_user">
         <tr>
             <th>{{_('Username')}}</th>
             <th>{{_('Email')}}</th>
             <th>{{_('Send to eReader Email')}}</th>
             <th>{{_('Downloads')}}</th>
-            <th class="hidden-xs ">{{_('Admin')}}</th>
-            <th class="hidden-xs hidden-sm">{{_('Password')}}</th>
+            <th class="d-none d-md-table-cell">{{_('Admin')}}</th>
+            <th class="d-none d-lg-table-cell">{{_('Password')}}</th>
           {% if config.config_uploading %}
-            <th class="hidden-xs hidden-sm">{{_('Upload')}}</th>
+            <th class="d-none d-lg-table-cell">{{_('Upload')}}</th>
           {%  endif %}
-            <th class="hidden-xs hidden-sm">{{_('Download')}}</th>
-            <th class="hidden-xs hidden-sm hidden-md">{{_('View Books')}}</th>
-            <th class="hidden-xs hidden-sm hidden-md">{{_('Edit')}}</th>
-            <th class="hidden-xs hidden-sm hidden-md">{{_('Delete')}}</th>
-            <th class="hidden-xs hidden-sm hidden-md">{{_('Public Shelf')}}</th>
+            <th class="d-none d-lg-table-cell">{{_('Download')}}</th>
+            <th class="d-none d-xl-table-cell">{{_('View Books')}}</th>
+            <th class="d-none d-xl-table-cell">{{_('Edit')}}</th>
+            <th class="d-none d-xl-table-cell">{{_('Delete')}}</th>
+            <th class="d-none d-xl-table-cell">{{_('Public Shelf')}}</th>
         </tr>
         {% for user in allUser %}
           {% if not user.role_anonymous() or config.config_anonbrowse %}
@@ -32,27 +33,27 @@
             <td>{{user.email}}</td>
             <td>{{user.kindle_mail}}</td>
             <td>{{user.downloads.count()}}</td>
-            <td class="hidden-xs">{{ display_bool_setting(user.role_admin()) }}</td>
-            <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_passwd()) }}</td>
+            <td class="d-none d-md-table-cell">{{ display_bool_setting(user.role_admin()) }}</td>
+            <td class="d-none d-lg-table-cell">{{ display_bool_setting(user.role_passwd()) }}</td>
             {% if config.config_uploading %}
-            <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_upload()) }}</td>
+            <td class="d-none d-lg-table-cell">{{ display_bool_setting(user.role_upload()) }}</td>
             {%  endif %}
-            <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_download()) }}</td>
-            <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_viewer()) }}</td>
-            <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_edit()) }}</td>
-            <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_delete_books()) }}</td>
-            <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_edit_shelfs()) }}</td>
+            <td class="d-none d-lg-table-cell">{{ display_bool_setting(user.role_download()) }}</td>
+            <td class="d-none d-xl-table-cell">{{ display_bool_setting(user.role_viewer()) }}</td>
+            <td class="d-none d-xl-table-cell">{{ display_bool_setting(user.role_edit()) }}</td>
+            <td class="d-none d-xl-table-cell">{{ display_bool_setting(user.role_delete_books()) }}</td>
+            <td class="d-none d-xl-table-cell">{{ display_bool_setting(user.role_edit_shelfs()) }}</td>
           </tr>
           {% endif %}
         {% endfor %}
       </table>
     {% endif %}
         {% if not simple %}
-          <a class="btn btn-default" id="admin_user_table" href="{{url_for('admin.edit_user_table')}}">{{_('Edit Users')}}</a>
+          <a class="btn btn-outline-secondary" id="admin_user_table" href="{{url_for('admin.edit_user_table')}}">{{_('Edit Users')}}</a>
         {% endif %}
-        <a class="btn btn-default" id="admin_new_user" href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a>
+        <a class="btn btn-outline-secondary" id="admin_new_user" href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a>
       {% if (config.config_login_type == 1) %}
-        <div class="btn btn-default" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog">{{_('Import LDAP Users')}}</div>
+        <div class="btn btn-outline-secondary" id="import_ldap_users" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Import LDAP Users')}}</div>
       {% endif %}
     </div>
   </div>
@@ -62,183 +63,183 @@
       <h2>{{_('Email Server Settings')}}</h2>
       {% if config.get_mail_server_configured() %}
         {% if config.mail_server_type == 0 %}
-        <div class="col-xs-12 col-sm-12">
+        <div class="col-12 col-sm-12">
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('SMTP Hostname')}}</div>
-            <div class="col-xs-6 col-sm-3">{{config.mail_server}}</div>
+            <div class="col-6 col-sm-3">{{_('SMTP Hostname')}}</div>
+            <div class="col-6 col-sm-3">{{config.mail_server}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('SMTP Port')}}</div>
-            <div class="col-xs-6 col-sm-3">{{config.mail_port}}</div>
+            <div class="col-6 col-sm-3">{{_('SMTP Port')}}</div>
+            <div class="col-6 col-sm-3">{{config.mail_port}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Encryption')}}</div>
-            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.mail_use_ssl) }}</div>
+            <div class="col-6 col-sm-3">{{_('Encryption')}}</div>
+            <div class="col-6 col-sm-3">{{ display_bool_setting(config.mail_use_ssl) }}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('SMTP Login')}}</div>
-            <div class="col-xs-6 col-sm-3">{{config.mail_login}}</div>
+            <div class="col-6 col-sm-3">{{_('SMTP Login')}}</div>
+            <div class="col-6 col-sm-3">{{config.mail_login}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('From Email')}}</div>
-            <div class="col-xs-6 col-sm-3">{{config.mail_from}}</div>
+            <div class="col-6 col-sm-3">{{_('From Email')}}</div>
+            <div class="col-6 col-sm-3">{{config.mail_from}}</div>
           </div>
         </div>
       {% else %}
-        <div class="col-xs-12 col-sm-12">
+        <div class="col-12 col-sm-12">
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Email Service')}}</div>
-            <div class="col-xs-6 col-sm-3">{{_('Gmail via Oauth2')}}</div>
+            <div class="col-6 col-sm-3">{{_('Email Service')}}</div>
+            <div class="col-6 col-sm-3">{{_('Gmail via Oauth2')}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('From Email')}}</div>
-            <div class="col-xs-6 col-sm-3">{{config.mail_gmail_token['email']}}</div>
+            <div class="col-6 col-sm-3">{{_('From Email')}}</div>
+            <div class="col-6 col-sm-3">{{config.mail_gmail_token['email']}}</div>
           </div>
         </div>
       {% endif %}
     {% endif %}
-      <a class="btn btn-default emailconfig" id="admin_edit_email" href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit Email Server Settings')}}</a>
+      <a class="btn btn-outline-secondary emailconfig" id="admin_edit_email" href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit Email Server Settings')}}</a>
     </div>
   </div>
 
   <div class="row">
     <div class="col">
       <h2>{{_('Configuration')}}</h2>
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-12 col-sm-6">
         <div class="row">
-            <div class="col-xs-6 col-sm-6">{{_('Calibre Database Directory')}}</div>
-            <div class="col-xs-6 col-sm-6">{{config.config_calibre_dir}}</div>
+            <div class="col-6 col-sm-6">{{_('Calibre Database Directory')}}</div>
+            <div class="col-6 col-sm-6">{{config.config_calibre_dir}}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-6">{{_('Log Level')}}</div>
-            <div class="col-xs-6 col-sm-6">{{config.get_log_level()}}</div>
+            <div class="col-6 col-sm-6">{{_('Log Level')}}</div>
+            <div class="col-6 col-sm-6">{{config.get_log_level()}}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-6">{{_('Port')}}</div>
-            <div class="col-xs-6 col-sm-6">{{config.config_port}}</div>
+            <div class="col-6 col-sm-6">{{_('Port')}}</div>
+            <div class="col-6 col-sm-6">{{config.config_port}}</div>
         </div>
         {% if kobo_support and config.config_port != config.config_external_port %}
         <div class="row">
-          <div class="col-xs-6 col-sm-6">{{_('External Port')}}</div>
-          <div class="col-xs-6 col-sm-6">{{config.config_external_port}}</div>
+          <div class="col-6 col-sm-6">{{_('External Port')}}</div>
+          <div class="col-6 col-sm-6">{{config.config_external_port}}</div>
         </div>
         {% endif %}
       </div>
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-12 col-sm-6">
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Books per Page')}}</div>
-            <div class="col-xs-6 col-sm-5">{{config.config_books_per_page}}</div>
+            <div class="col-6 col-sm-7">{{_('Books per Page')}}</div>
+            <div class="col-6 col-sm-5">{{config.config_books_per_page}}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Uploads')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_uploading) }}</div>
+            <div class="col-6 col-sm-7">{{_('Uploads')}}</div>
+            <div class="col-6 col-sm-5">{{ display_bool_setting(config.config_uploading) }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Anonymous Browsing')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_anonbrowse) }}</div>
+            <div class="col-6 col-sm-7">{{_('Anonymous Browsing')}}</div>
+            <div class="col-6 col-sm-5">{{ display_bool_setting(config.config_anonbrowse) }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Public Registration')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_public_reg) }}</div>
+            <div class="col-6 col-sm-7">{{_('Public Registration')}}</div>
+            <div class="col-6 col-sm-5">{{ display_bool_setting(config.config_public_reg) }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Magic Link Remote Login')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_remote_login) }}</div>
+            <div class="col-6 col-sm-7">{{_('Magic Link Remote Login')}}</div>
+            <div class="col-6 col-sm-5">{{ display_bool_setting(config.config_remote_login) }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Login')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_allow_reverse_proxy_header_login) }}</div>
+            <div class="col-6 col-sm-7">{{_('Reverse Proxy Login')}}</div>
+            <div class="col-6 col-sm-5">{{ display_bool_setting(config.config_allow_reverse_proxy_header_login) }}</div>
         </div>
         {% if config.config_allow_reverse_proxy_header_login %}
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Header Name')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_login_header_name }}</div>
+            <div class="col-6 col-sm-7">{{_('Reverse Proxy Header Name')}}</div>
+            <div class="col-6 col-sm-5">{{ config.config_reverse_proxy_login_header_name }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Trusted IPs/CIDRs')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_trusted_ips }}</div>
+            <div class="col-6 col-sm-7">{{_('Reverse Proxy Trusted IPs/CIDRs')}}</div>
+            <div class="col-6 col-sm-5">{{ config.config_reverse_proxy_trusted_ips }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Shared Secret Header Name')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_login_secret_header_name }}</div>
+            <div class="col-6 col-sm-7">{{_('Reverse Proxy Shared Secret Header Name')}}</div>
+            <div class="col-6 col-sm-5">{{ config.config_reverse_proxy_login_secret_header_name }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Shared Secret Header')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_reverse_proxy_use_shared_secret) }}</div>
+            <div class="col-6 col-sm-7">{{_('Reverse Proxy Shared Secret Header')}}</div>
+            <div class="col-6 col-sm-5">{{ display_bool_setting(config.config_reverse_proxy_use_shared_secret) }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Shared Secret Configured')}}</div>
-            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_reverse_proxy_login_header_secret_e) }}</div>
+            <div class="col-6 col-sm-7">{{_('Reverse Proxy Shared Secret Configured')}}</div>
+            <div class="col-6 col-sm-5">{{ display_bool_setting(config.config_reverse_proxy_login_header_secret_e) }}</div>
         </div>
         {% endif %}
       </div>
-      <a class="btn btn-default" id="db_config" href="{{url_for('admin.db_configuration')}}">{{_('Edit Calibre Database Configuration')}}</a>
-      <a class="btn btn-default" id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Edit Basic Configuration')}}</a>
-      <a class="btn btn-default" id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a>
+      <a class="btn btn-outline-secondary" id="db_config" href="{{url_for('admin.db_configuration')}}">{{_('Edit Calibre Database Configuration')}}</a>
+      <a class="btn btn-outline-secondary" id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Edit Basic Configuration')}}</a>
+      <a class="btn btn-outline-secondary" id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a>
     </div>
   </div>
 {%  if feature_support['scheduler'] %}
   <div class="row">
     <div class="col">
       <h2>{{_('Scheduled Tasks')}}</h2>
-        <div class="col-xs-12 col-sm-12 scheduled_tasks_details">
+        <div class="col-12 col-sm-12 scheduled_tasks_details">
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Start Time')}}</div>
-            <div class="col-xs-6 col-sm-3">{{schedule_time}}</div>
+            <div class="col-6 col-sm-3">{{_('Start Time')}}</div>
+            <div class="col-6 col-sm-3">{{schedule_time}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Maximum Duration')}}</div>
-            <div class="col-xs-6 col-sm-3">{{schedule_duration}}</div>
+            <div class="col-6 col-sm-3">{{_('Maximum Duration')}}</div>
+            <div class="col-6 col-sm-3">{{schedule_duration}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Generate Thumbnails')}}</div>
-            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_book_covers) }}</div>
+            <div class="col-6 col-sm-3">{{_('Generate Thumbnails')}}</div>
+            <div class="col-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_book_covers) }}</div>
           </div>
           <!--div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Generate series cover thumbnails')}}</div>
-            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_series_covers) }}</div>
+            <div class="col-6 col-sm-3">{{_('Generate series cover thumbnails')}}</div>
+            <div class="col-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_series_covers) }}</div>
           </div-->
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Reconnect Calibre Database')}}</div>
-            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_reconnect) }}</div>
+            <div class="col-6 col-sm-3">{{_('Reconnect Calibre Database')}}</div>
+            <div class="col-6 col-sm-3">{{ display_bool_setting(config.schedule_reconnect) }}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Generate Metadata Backup Files')}}</div>
-            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_metadata_backup) }}</div>
+            <div class="col-6 col-sm-3">{{_('Generate Metadata Backup Files')}}</div>
+            <div class="col-6 col-sm-3">{{ display_bool_setting(config.schedule_metadata_backup) }}</div>
           </div>
 
         </div>
-      <a class="btn btn-default scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">{{_('Edit Scheduled Tasks Settings')}}</a>
+      <a class="btn btn-outline-secondary scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">{{_('Edit Scheduled Tasks Settings')}}</a>
       {% if config.schedule_generate_book_covers %}
-        <a class="btn btn-default" id="admin_refresh_cover_cache">{{_('Refresh Thumbnail Cache')}}</a>
+        <a class="btn btn-outline-secondary" id="admin_refresh_cover_cache">{{_('Refresh Thumbnail Cache')}}</a>
       {%  endif %}
     </div>
   </div>
 {%  endif %}
-  <div class="row form-group">
+  <div class="row mb-3">
     <h2>{{_('Administration')}}</h2>
-    <a class="btn btn-default" id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a>
-    <a class="btn btn-default" id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a>
+    <a class="btn btn-outline-secondary" id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a>
+    <a class="btn btn-outline-secondary" id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a>
   </div>
-  <div class="row form-group">
-    <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
+  <div class="row mb-3">
+    <div class="btn btn-outline-secondary" id="restart_database" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
   </div>
-  <div class="row form-group">
-    <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
-    <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
+  <div class="row mb-3">
+    <div class="btn btn-outline-secondary" id="admin_restart" data-bs-toggle="modal" data-bs-target="#RestartDialog">{{_('Restart')}}</div>
+    <div class="btn btn-outline-secondary" id="admin_stop" data-bs-toggle="modal" data-bs-target="#ShutdownDialog">{{_('Shutdown')}}</div>
   </div>
 {% if config.schedule_metadata_backup %}
-  <div class="row form-group">
-    <div class="btn btn-default" id="metadata_backup" data-toggle="modal" data-target="#StatusDialog">{{_('Queue all books for metadata backup')}}</div>
+  <div class="row mb-3">
+    <div class="btn btn-outline-secondary" id="metadata_backup" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Queue all books for metadata backup')}}</div>
   </div>
 {%  endif %}
   <div class="row">
     <div class="col">
       <h2>{{_('Version Information')}}</h2>
-      <table class="table table-striped" id="update_table">
+      <table class="table table-hover align-middle table-striped" id="update_table">
         <thead>
           <tr>
-              <th class="col-xs-3">{{_('Version')}}</th>
+              <th class="col-3">{{_('Version')}}</th>
               <th class="col-xl-8">{{_('Details')}}</th>
           </tr>
         </thead>
@@ -251,9 +252,9 @@
       </table>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       {%  if feature_support['updater'] %}
-      <div class="hidden" id="update_error"> <span>{{update_error}}</span></div>
+      <div class="d-none" id="update_error"> <span>{{update_error}}</span></div>
       <div class="btn btn-primary" id="check_for_update">{{_('Check for Update')}}</div>
-      <div class="btn btn-primary hidden" id="perform_update" data-toggle="modal" data-target="#StatusDialog">{{_('Perform Update')}}</div>
+      <div class="btn btn-primary d-none" id="perform_update" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Perform Update')}}</div>
       {%  endif %}
     </div>
   </div>
@@ -264,7 +265,7 @@
   <div class="modal-dialog modal-sm">
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header bg-info">
+      <div class="modal-header">
         <h4 class="modal-title">{{_('Restart Calibre-Web')}}</h4>
       </div>
       <div class="modal-body text-center">
@@ -273,8 +274,8 @@
                 <img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/>
           </div>
           <p></p>
-        <button type="button" class="btn btn-default" id="restart" >{{_('OK')}}</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <button type="button" class="btn btn-outline-secondary" id="restart" >{{_('OK')}}</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
@@ -283,13 +284,13 @@
   <div class="modal-dialog modal-sm">
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header bg-info">
+      <div class="modal-header">
         <h4 class="modal-title">{{_('Stop Calibre-Web')}}</h4>
       </div>
       <div class="modal-body text-center">
         <p>{{_('Are you sure you want to shutdown?')}}</p>
-        <button type="button" class="btn btn-default" id="shutdown" data-dismiss="modal">{{_('OK')}}</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <button type="button" class="btn btn-outline-secondary" id="shutdown" data-bs-dismiss="modal">{{_('OK')}}</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
@@ -298,7 +299,7 @@
   <div class="modal-dialog modal-sm">
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header bg-info text-center">
+      <div class="modal-header text-center">
         <h4 class="modal-title">{{_('Update Calibre-Web')}}</h4>
       </div>
       <div class="modal-body text-center">
@@ -308,7 +309,7 @@
           <p></p>
          <div id="DialogContent"></div>
           <p></p>
-        <button type="button" class="btn btn-default hidden" id="DialogFinished" data-dismiss="modal">{{_('OK')}}</button>
+        <button type="button" class="btn btn-outline-secondary d-none" id="DialogFinished" data-bs-dismiss="modal">{{_('OK')}}</button>
       </div>
     </div>
   </div>

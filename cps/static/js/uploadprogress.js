@@ -18,24 +18,26 @@
         return;
     }
 
+/* global bootstrap */
+
     var template = "<div class=\"modal fade\" id=\"file-progress-modal\">" +
     "<div class=\"modal-dialog upload-modal-dialog\">" +
     "  <div class=\"modal-content\">" +
     "    <div class=\"modal-header\">" +
-    "      <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" +
-    "      <h4 class=\"modal-title\">Uploading</h4>" +
+    "      <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>" +
+    "      <h5 class=\"modal-title\">Uploading</h5>" +
     "    </div>" +
     "    <div class=\"modal-body\">" +
     "      <div class=\"modal-message\"></div>" +
     "      <div class=\"progress\">" +
-    "        <div class=\"progress-bar progress-bar-striped active\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\"" +
+    "        <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\"" +
     "             aria-valuemax=\"100\" style=\"width: 0%;min-width: 2em;\">" +
     "          0%" +
     "        </div>" +
     "     </div>" +
     "   </div>" +
     "   <div class=\"modal-footer\" style=\"display:none\">" +
-    "     <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>" +
+    "     <button type=\"button\" class=\"btn btn-outline-secondary\" data-bs-dismiss=\"modal\">Close</button>" +
     "   </div>" +
     "   </div>" +
     "  </div>" +
@@ -66,8 +68,8 @@
         reset: function() {
             this.$modalTitle.text(this.options.modalTitle);
             this.$modalFooter.hide();
-            this.$modalBar.addClass("progress-bar-success");
-            this.$modalBar.removeClass("progress-bar-danger");
+            this.$modalBar.addClass("bg-success");
+            this.$modalBar.removeClass("bg-danger");
             if (this.xhr) {
                 this.xhr.abort();
             }
@@ -76,11 +78,11 @@
         submit: function(e) {
             e.preventDefault();
 
-            this.$modal.modal({
+            this.modal = bootstrap.Modal.getOrCreateInstance(this.$modal[0], {
                 backdrop: "static",
                 keyboard: false
             });
-
+            this.modal.show();
             // We need the native XMLHttpRequest for the progress event
             var xhr = new XMLHttpRequest();
             this.xhr = xhr;
@@ -125,8 +127,8 @@
             this.$modalTitle.text(this.options.modalTitleFailed);
 
             this.setProgress(100);
-            this.$modalBar.removeClass("progress-bar-success");
-            this.$modalBar.addClass("progress-bar-danger");
+            this.$modalBar.removeClass("bg-success");
+            this.$modalBar.addClass("bg-danger");
             this.$modalFooter.show();
 
             var contentType = xhr.getResponseHeader("Content-Type");

@@ -4,27 +4,23 @@
     data-name="{{ parameter }}"
     data-escape="true"
     data-visible="{{visiblility.get(parameter)}}"
-    data-editable-type="text"
-    data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
-    data-editable-title="{{ edit_text }}"
-    data-edit="true"
+    data-formatter="userEditLinkFormatter"
     {% if not button %}
     data-sortable="true"
-    {% endif %}
-    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
+    {% endif %}>
     {% if elements %}
         <div class="multi_select">
-            <select class="multi_selector" id="{{ parameter }}" data-live-search="true" data-style="btn-default" data-dropup-auto="false" aria-disabled="true" multiple disabled>
+            <select class="multi_selector form-select" id="{{ parameter }}" aria-disabled="true" multiple disabled>
               {% for tag in elements %}
               <option class="tags_click" value="{{tag.id}}">{% if tag.name %}{{tag.name}}{% else %}{{tag.value}}{% endif %}</option>
               {% endfor %}
             </select>
-            <div class="btn-group btn-group-justified" role="group">
-              <div class="btn-group" role="group">
-                  <div class="multi_head btn btn-default hidden" data-set="remove" data-name="{{parameter}}" aria-disabled="true">{{_('Remove')}}</div>
+            <div class="d-flex gap-2" role="group">
+              <div class="btn-group flex-fill" role="group">
+                  <div class="multi_head btn btn-outline-secondary d-none" data-set="remove" data-name="{{parameter}}" aria-disabled="true">{{_('Remove')}}</div>
               </div>
-              <div class="btn-group" role="group">
-                  <div class="multi_head btn btn-default hidden" data-set="add" data-name="{{parameter}}" aria-disabled="true">{{_('Add')}}</div>
+              <div class="btn-group flex-fill" role="group">
+                  <div class="multi_head btn btn-outline-secondary d-none" data-set="add" data-name="{{parameter}}" aria-disabled="true">{{_('Add')}}</div>
               </div>
             </div>
         </div>
@@ -68,13 +64,8 @@
 {% macro user_select_languages(parameter, url, show_text, validate) -%}
 <th data-field="{{ parameter }}" id="{{ parameter }}"
     data-name="{{ parameter }}"
-    data-visible="{{visiblility.get(parameter)}}"
-    data-edit="true"
-    data-sortable="true"
-    data-editable-type="select"
-    data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
-    data-editable-source="{{url}}"
-    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
+    data-formatter="userEditLinkFormatter"
+    data-sortable="true">
     <div>
       <select id="select_{{ parameter }}" class="header_select" disabled="">
       <option value="none">{{ _('Select...') }}</option>
@@ -91,13 +82,8 @@
 {% macro user_select_translations(parameter, url, show_text, validate) -%}
 <th data-field="{{ parameter }}" id="{{ parameter }}"
     data-name="{{ parameter }}"
-    data-visible="{{visiblility.get(parameter)}}"
-    data-editable-type="select"
-    data-edit="true"
-    data-sortable="true"
-    data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
-    data-editable-source="{{url}}"
-    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
+    data-formatter="userEditLinkFormatter"
+    data-sortable="true">
     <div>
       <select id="select_{{ parameter }}" class="header_select" disabled="">
       <option value="None">{{_('Select...')}}</option>
@@ -113,20 +99,18 @@
 
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet" >
 {% endblock %}
 {% block body %}
 <div class="discover">
   <h2 class="{{page}}">{{_(title)}}</h2>
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-  <div class="col-xs-12 col-sm-12">
+  <div class="col-12 col-sm-12">
     <div class="row">
-      <div class="btn btn-default disabled mass_selection" id="user_delete_selection" aria-disabled="true">{{_('Clear selections')}}</div>
+      <div class="btn btn-outline-secondary disabled mass_selection" id="user_delete_selection" aria-disabled="true">{{_('Clear selections')}}</div>
     </div>
   </div>
-  <table id="user-table" class="table table-no-bordered table-striped"
-         data-url="{{url_for('admin.list_users')}}"  data-locale="{{ current_user.locale }}">
+  <table id="user-table" class="table table-hover align-middle table-no-bordered table-striped"
+         data-url="{{url_for('admin.list_users')}}" data-locale="{{ current_user.locale }}" data-edit-url="{{ url_for('admin.edit_user', user_id=0) }}">
     <thead>
       <tr>
         <th data-name="edit" data-buttontext="{{_('Edit User')}}" data-visible="{{visiblility.get('edit')}}" data-formatter="singleUserFormatter">{{_('Edit')}}</th>
@@ -167,12 +151,12 @@
         {{ user_checkbox_row("sidebar_view", "sidebar_archived", _('Show Archived Books'), visiblility, sidebar_settings)}}
         {{ user_checkbox_row("sidebar_view", "sidebar_download", _('Show Downloaded Books'), visiblility, sidebar_settings)}}
         {{ user_checkbox_row("sidebar_view", "sidebar_list", _('Show Books List'), visiblility, sidebar_settings)}}
-        <th data-align="right" data-formatter="UserActions" data-switchable="false"><div><div class="btn btn-default button_head disabled" aria-disabled="true">{{_('Delete User')}}</div></div><br>{{_('Delete User')}}</th>
+        <th data-align="right" data-formatter="UserActions" data-switchable="false"><div><div class="btn btn-outline-secondary button_head disabled" aria-disabled="true">{{_('Delete User')}}</div></div><br>{{_('Delete User')}}</th>
       </tr>
     </thead>
   </table>
   <div class="errorlink">
-    <div class="btn btn-default" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Back')}}</div>
+    <div class="btn btn-outline-secondary" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Back')}}</div>
   </div>
 </div>
 {% endblock %}
@@ -184,11 +168,5 @@
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
-{% if not current_user.locale == 'en' %}
-<script src="{{ url_for('static', filename='js/libs/bootstrap-select/defaults-' + current_user.locale + '.min.js') }}" charset="UTF-8"></script>
-{% endif %}
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}

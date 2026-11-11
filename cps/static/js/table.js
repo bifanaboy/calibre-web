@@ -16,8 +16,7 @@
  */
 
 /* exported TableActions, RestrictionActions, EbookActions, TaskActions, responseHandler */
-/* global getPath, confirmDialog */
-
+/* global getPath, confirmDialog, bootstrap */
 var selections = [];
 var reload = false;
 
@@ -171,7 +170,7 @@ $(function() {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
-            $('#mergeModal').modal("show");
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("mergeModal")).show();
         }
         $.ajax({
             method:"post",
@@ -194,7 +193,7 @@ $(function() {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
-            $('#edit_selected_modal').modal("show");
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("edit_selected_modal")).show();
         }
     });
 
@@ -243,7 +242,7 @@ $(function() {
                         } else {
                             result = "danger";
                         }
-                        $(".navbar").after('<div class="row-fluid text-center">' +
+                        $(".navbar").after('<div class="row text-center">' +
                             '<div id="flash_' + result + '" class="alert alert-' + result + '">' + item.msg + '</div>' +
                             '</div>');
                     });
@@ -258,7 +257,7 @@ $(function() {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
-            $('#archive_selected_modal').modal("show");
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("archive_selected_modal")).show();
         }
         $.ajax({
             method:"post",
@@ -294,7 +293,7 @@ $(function() {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
-            $('#unarchive_selected_modal').modal("show");
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("unarchive_selected_modal")).show();
         }
         $.ajax({
             method:"post",
@@ -330,7 +329,7 @@ $(function() {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
-            $('#delete_selected_modal').modal("show");
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("delete_selected_modal")).show();
         }
         $.ajax({
             method:"post",
@@ -366,7 +365,7 @@ $(function() {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
-            $('#read_selected_modal').modal("show");
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("read_selected_modal")).show();
         }
         $.ajax({
             method:"post",
@@ -402,7 +401,7 @@ $(function() {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
-            $('#unread_selected_modal').modal("show");
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("unread_selected_modal")).show();
         }
         $.ajax({
             method:"post",
@@ -448,44 +447,7 @@ $(function() {
         });
     });
 
-    var column = [];
-    $("#books-table > thead > tr > th").each(function() {
-        var element = {};
-        if ($(this).attr("data-edit")) {
-            element = {
-                editable: {
-                    mode: "inline",
-                    emptytext: "<span class='glyphicon glyphicon-plus'></span>",
-                    ajaxOptions: {
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                    },
-                    success: function (response, __) {
-                        if (!response.success) return response.msg;
-                        return {newValue: response.newValue};
-                    },
-                    params: function (params) {
-                        params.checkA = $('#autoupdate_authorsort').prop('checked');
-                        params.checkT = $('#autoupdate_titlesort').prop('checked');
-                        params.pk = [params.pk];
-                        return JSON.stringify(params);
-                    }
-                }
-            };
-            if ($(this).attr("data-editable-type") == "wysihtml5") {
-                //if (this.id == "comments") {
-                element.editable.display = shorten_html;
-            }
-            var validateText = $(this).attr("data-edit-validate");
-            if (validateText) {
-                element.editable.validate = function (value) {
-                    if ($.trim(value) === "") return validateText;
-                };
-            }
-        }
-        column.push(element);
-    });
-    // $.fn.editable.defaults.display = comment_display;
+
 
     $("#books-table").bootstrapTable({
         sidePagination: "server",
@@ -505,26 +467,6 @@ $(function() {
         checkboxHeader: true,
         maintainMetaData: true,
         responseHandler: responseHandler,
-        columns: column,
-        // eslint-disable-next-line no-unused-vars
-        onEditableSave: function (field, row, oldvalue, $el) {
-            if ($.inArray(field, [ "title", "sort" ]) !== -1 && $('#autoupdate_titlesort').prop('checked')
-                || $.inArray(field, [ "authors", "author_sort" ]) !== -1 && $('#autoupdate_authorsort').prop('checked')) {
-                $.ajax({
-                    method:"get",
-                    dataType: "json",
-                    url: getPath() + "/ajax/sort_value/" + field + "/" + row.id,
-                    success: function success(data) {
-                        var key = Object.keys(data)[0];
-                        $("#books-table").bootstrapTable("updateCellByUniqueId", {
-                            id: row.id,
-                            field: key,
-                            value: data[key]
-                        });
-                    }
-                });
-            }
-        },
         onPostBody () {
             // Remove all checkboxes from Headers for showing the texts in the column selector
             $('.columns [data-field]').each(function(){
@@ -690,10 +632,10 @@ $(function() {
         $("#restrict-elements-table").unbind();
         $("#restrict-elements-table").bootstrapTable("destroy");
         $("[id^=submit_]").unbind();
-        $("#h1").addClass("hidden");
-        $("#h2").addClass("hidden");
-        $("#h3").addClass("hidden");
-        $("#h4").addClass("hidden");
+        $("#h1").addClass("d-none");
+        $("#h2").addClass("d-none");
+        $("#h3").addClass("d-none");
+        $("#h4").addClass("d-none");
         $("#add_element").val("");
     });
 
@@ -702,43 +644,43 @@ $(function() {
         switch(target) {
             case "get_column_values":
                 type = 1;
-                $("#h2").removeClass("hidden");
+                $("#h2").removeClass("d-none");
                 break;
             case "get_tags":
                 type = 0;
-                $("#h1").removeClass("hidden");
+                $("#h1").removeClass("d-none");
                 break;
             case "get_user_column_values":
                 type = 3;
-                $("#h4").removeClass("hidden");
+                $("#h4").removeClass("d-none");
                 break;
             case "get_user_tags":
                 type = 2;
-                $("#h3").removeClass("hidden");
+                $("#h3").removeClass("d-none");
                 break;
             case "denied_tags":
                 type = 2;
-                $("#h2").removeClass("hidden");
-                $("#submit_allow").addClass("hidden");
-                $("#submit_restrict").removeClass("hidden");
+                $("#h2").removeClass("d-none");
+                $("#submit_allow").addClass("d-none");
+                $("#submit_restrict").removeClass("d-none");
                 break;
             case "allowed_tags":
                 type = 2;
-                $("#h2").removeClass("hidden");
-                $("#submit_restrict").addClass("hidden");
-                $("#submit_allow").removeClass("hidden");
+                $("#h2").removeClass("d-none");
+                $("#submit_restrict").addClass("d-none");
+                $("#submit_allow").removeClass("d-none");
                 break;
             case "allowed_column_value":
                 type = 3;
-                $("#h2").removeClass("hidden");
-                $("#submit_restrict").addClass("hidden");
-                $("#submit_allow").removeClass("hidden");
+                $("#h2").removeClass("d-none");
+                $("#submit_restrict").addClass("d-none");
+                $("#submit_allow").removeClass("d-none");
                 break;
             case "denied_column_value":
                 type = 3;
-                $("#h2").removeClass("hidden");
-                $("#submit_allow").addClass("hidden");
-                $("#submit_restrict").removeClass("hidden");
+                $("#h2").removeClass("d-none");
+                $("#submit_allow").addClass("d-none");
+                $("#submit_restrict").removeClass("d-none");
                 break;
         }
 
@@ -752,8 +694,8 @@ $(function() {
                 }
             },
             onLoadSuccess: function () {
-                $(".no-records-found").addClass("hidden");
-                $(".fixed-table-loading").addClass("hidden");
+                $(".no-records-found").addClass("d-none");
+                $(".fixed-table-loading").addClass("d-none");
             },
             onClickCell: function (field, value, row) {
                 if (field === 3) {
@@ -780,13 +722,6 @@ $(function() {
             striped: false
         });
         $("#restrict-elements-table").removeClass("table-hover");
-        $("#restrict-elements-table").on("editable-save.bs.table", function (e, field, row) {
-            $.ajax({
-                url: getPath() + "/ajax/editrestriction/" + type + "/" + userId,
-                type: "Post",
-                data: row
-            });
-        });
         $("[id^=submit_]").click(function() {
             $(this)[0].blur();
             $.ajax({
@@ -822,28 +757,7 @@ $(function() {
     });
 
     // User table handling
-    var user_column = [];
-    $("#user-table > thead > tr > th").each(function() {
-        var element = {};
-        if ($(this).attr("data-edit")) {
-            element = {
-                editable: {
-                    mode: "inline",
-                    emptytext: "<span class='glyphicon glyphicon-plus'></span>",
-                    error: function(response) {
-                        return response.responseText;
-                    }
-                }
-            };
-        }
-        var validateText = $(this).attr("data-edit-validate");
-        if (validateText) {
-            element.editable.validate = function (value) {
-                if ($.trim(value) === "") return validateText;
-            };
-        }
-        user_column.push(element);
-    });
+
 
     $("#user-table").bootstrapTable({
         sidePagination: "server",
@@ -862,7 +776,6 @@ $(function() {
         checkboxHeader: true,
         maintainMetaData: true,
         responseHandler: responseHandler,
-        columns: user_column,
         onPostBody () {
             // Remove all checkboxes from Headers for showing the texts in the column selector
             $('.columns [data-field]').each(function(){
@@ -930,7 +843,7 @@ function handle_header_buttons () {
         $(".button_head").attr("aria-disabled", true);
         $(".button_head").addClass("disabled");
         $(".multi_head").attr("aria-disabled", true);
-        $(".multi_head").addClass("hidden");
+        $(".multi_head").addClass("d-none");
         $(".multi_selector").attr("aria-disabled", true);
         $(".multi_selector").attr("disabled", true);
         $(".header_select").attr("disabled", true);
@@ -942,13 +855,10 @@ function handle_header_buttons () {
         $(".button_head").attr("aria-disabled", false);
         $(".button_head").removeClass("disabled");
         $(".multi_head").attr("aria-disabled", false);
-        $(".multi_head").removeClass("hidden");
+        $(".multi_head").removeClass("d-none");
         $(".multi_selector").attr("aria-disabled", false);
         $(".multi_selector").removeAttr("disabled");
         $(".header_select").removeAttr("disabled");
-        if (typeof $.fn.selectpicker === "function") {
-            $('.multi_selector').selectpicker('refresh');
-        }
     }
 }
 
@@ -957,7 +867,7 @@ function TableActions (value, row) {
     return [
         "<a class=\"danger remove\"  data-value=\"" + row.id
         + "\" title=\"Remove\">",
-        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "<svg class=\"cw-ico cw-ico-trash\" aria-hidden=\"true\"><use href=\"#cw-i-trash\"></use></svg>",
         "</a>"
     ].join("");
 }
@@ -966,7 +876,7 @@ function TableActions (value, row) {
 function RestrictionActions (value, row) {
     return [
         "<div class=\"danger remove\" data-restriction-id=\"" + row.id + "\" title=\"Remove\">",
-        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "<svg class=\"cw-ico cw-ico-trash\" aria-hidden=\"true\"><use href=\"#cw-i-trash\"></use></svg>",
         "</div>"
     ].join("");
 }
@@ -974,8 +884,8 @@ function RestrictionActions (value, row) {
 /* Function for deleting books */
 function EbookActions (value, row) {
     return [
-        "<div class=\"book-remove\" data-toggle=\"modal\" data-target=\"#deleteModal\" data-ajax=\"1\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
-        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "<div class=\"book-remove\" data-bs-toggle=\"modal\" data-bs-target=\"#deleteModal\" data-ajax=\"1\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
+        "<svg class=\"cw-ico cw-ico-trash\" aria-hidden=\"true\"><use href=\"#cw-i-trash\"></use></svg>",
         "</div>"
     ].join("");
 }
@@ -984,7 +894,7 @@ function EbookActions (value, row) {
 function UserActions (value, row) {
     return [
         "<div class=\"user-remove\" data-value=\"delete\" onclick=\"deleteUser(this, '" + row.id + "')\" data-pk=\"" + row.id + "\" title=\"Remove\">",
-        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "<svg class=\"cw-ico cw-ico-trash\" aria-hidden=\"true\"><use href=\"#cw-i-trash\"></use></svg>",
         "</div>"
     ].join("");
 }
@@ -994,8 +904,8 @@ function TaskActions (value, row) {
     var cancellableStats = [0, 2];
     if (row.task_id && row.is_cancellable && cancellableStats.includes(row.stat)) {
         return [
-            "<div class=\"danger task-cancel\" data-toggle=\"modal\" data-target=\"#cancelTaskModal\" data-task-id=\"" + row.task_id + "\" title=\"Cancel\">",
-            "<i class=\"glyphicon glyphicon-ban-circle\"></i>",
+            "<div class=\"danger task-cancel\" data-bs-toggle=\"modal\" data-bs-target=\"#cancelTaskModal\" data-task-id=\"" + row.task_id + "\" title=\"Cancel\">",
+            "<svg class=\"cw-ico cw-ico-ban\" aria-hidden=\"true\"><use href=\"#cw-i-ban\"></use></svg>",
             "</div>"
         ].join("");
     }
@@ -1011,7 +921,7 @@ function responseHandler(res) {
 }
 
 function singleUserFormatter(value, row) {
-    return '<a class="btn btn-default" onclick="storeLocation()" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
+    return '<a class="btn btn-outline-secondary" onclick="storeLocation()" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
 }
 
 function checkboxFormatter(value, row){
@@ -1042,40 +952,43 @@ function ratingFormatter(value, row) {
     return (value/2);
 }
 
+
 function seriesIndexFormatter(value, row) {
     if (!value) {
         return value;
     }
-    formated_value = Number(value).toFixed(2);
-    if (formated_value.endsWith(".00")) {
-        formated_value = parseInt(formated_value).toString();
+    var formattedValue = Number(value).toFixed(2);
+    if (formattedValue.endsWith(".00")) {
+        return parseInt(formattedValue).toString();
     }
-    return formated_value;
+    return formattedValue;
+}
+
+function editLinkFormatter(value, row) {
+    var base = $("#books-table").attr("data-edit-url");
+    return formatEditLink(value, row, base);
+}
+
+function userEditLinkFormatter(value, row) {
+    var base = $("#user-table").attr("data-edit-url");
+    return formatEditLink(value, row, base);
+}
+
+function formatEditLink(value, row, base) {
+    if (!base || row.id === undefined) return value;
+    return '<a href="' + base.replace(/\/0$/, "/" + encodeURIComponent(row.id)) + '">' +
+        (value === null || value === undefined || value === "" ? "Edit" : $('<div>').text(value).html()) +
+        '</a>';
+}
+
+function ratingEditFormatter(value, row) {
+    return editLinkFormatter(value ? value / 2 : value, row);
 }
 
 
-/* Do some hiding disabling after user list is loaded */
 function loadSuccess() {
-    var guest = $(".editable[data-name='name'][data-value='Guest']");
-    guest.editable("disable");
-    $("input:radio.check_head:checked").each(function() {
-        $(this).prop('checked', false);
-    });
-    $(".header_select").each(function() {
-        $(this).prop("selectedIndex", 0);
-    });
-    $(".header_select").each(function() {
-        $(this).prop("selectedIndex", 0);
-    });
-    $('.multi_selector').selectpicker('deselectAll');
-    $('.multi_selector').selectpicker('refresh');
-    $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").editable("disable");
-    $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").hide();
-    $("input[data-name='admin_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-    $("input[data-name='passwd_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-    $("input[data-name='edit_shelf_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-    $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-    $(".user-remove[data-pk='" + guest.data("pk") + "']").hide();
+    $("input:radio.check_head:checked").prop('checked', false);
+    $(".header_select").prop("selectedIndex", 0);
 }
 
 function move_header_elements() {
@@ -1101,7 +1014,6 @@ function move_header_elements() {
             item.addClass("myselect");
         }
     });
-    $(".multi_selector").selectpicker();
     if ($(".multi_head").length) {
         if (!$._data($(".multi_head").get(0), "events")) {
             // Functions have to be here, otherwise the callbacks are not fired if visible columns are changed
@@ -1185,7 +1097,7 @@ function handleListServerResponse (data) {
     $("#flash_danger").remove();
     if (!jQuery.isEmptyObject(data)) {
         data.forEach(function(item) {
-            $(".navbar").after('<div class="row-fluid text-center">' +
+            $(".navbar").after('<div class="row text-center">' +
                 '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                 '</div>');
         });

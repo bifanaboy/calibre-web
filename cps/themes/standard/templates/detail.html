@@ -1,3 +1,4 @@
+{% from 'icons.html' import icon %}
 {% extends is_xhr|yesno("fragment.html", theme("layout.html")) %}
 {% block header %}
     <meta property="og:type" content="book" />
@@ -10,7 +11,7 @@
 {% block body %}
 <div class="single">
     <div class="row">
-        <div class="col-sm-3 col-lg-3 col-xs-5">
+        <div class="col-sm-3 col-lg-3 col-5">
             <div class="cover">
                 <!-- Always use full-sized image for the detail page -->
                 <img id="detailcover" title="{{ entry.title }}"
@@ -18,7 +19,34 @@
             </div>
         </div>
         <div class="col-sm-9 col-lg-9 book-meta">
-            <div class="btn-toolbar" role="toolbar">
+            <h2 id="title" class="fs-4 fw-bold">{{ entry.title }}</h2>
+            <p class="author text-muted">
+                {% for author in entry.ordered_authors %}
+                    <a href="{{ url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{ author.name.replace('|',',') }}</a>
+                    {% if not loop.last %}
+                        &amp;
+                    {% endif %}
+                {% endfor %}
+            </p>
+            {% if entry.ratings.__len__() > 0 %}
+                <div class="rating">
+                    <p>
+                        {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+                            {{ icon('star') }}
+                            {% if loop.last and loop.index < 5 %}
+                                {% for numer in range(5 - loop.index) %}
+                                    {{ icon('star-empty') }}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+            {% endif %}
+            {% if entry.series|length > 0 %}
+                <p class="text-muted">{{ _("Book %(index)s of %(range)s", index=entry.series_index|formatfloat(2), range=(url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)|escapedlink(entry.series[0].name))|safe) }}</p>
+
+            {% endif %}
+            <div class="btn-toolbar d-flex flex-wrap gap-2" role="toolbar">
                 <div class="btn-group" role="group" aria-label="Download, send to eReader, reading">
                     {% if current_user.role_download() %}
                         {% if entry.data|length %}
@@ -31,20 +59,19 @@
                                         <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower|replace('kepub', 'kepub.epub')) }}"
                                            id="btnGroupDrop1{{ format.format|lower }}" class="btn btn-primary"
                                            role="button">
-                                            <span class="glyphicon glyphicon-download"></span>{{ format.format }}
+                                            {{ icon('download') }}{{ format.format }}
                                             ({{ format.uncompressed_size|filesizeformat }})
                                         </a>
                                     {% endfor %}
                                 {% else %}
                                     <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="glyphicon glyphicon-download"></span> {{ _('Download') }}
-                                        <span class="caret"></span>
+                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ icon('download') }} {{ _('Download') }}
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         {% for format in entry.data %}
                                             <li>
-                                                <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower|replace('kepub', 'kepub.epub')) }}">{{ format.format }}
+                                                <a class="dropdown-item" href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower|replace('kepub', 'kepub.epub')) }}">{{ format.format }}
                                                     ({{ format.uncompressed_size|filesizeformat }})</a></li>
                                         {% endfor %}
                                     </ul>
@@ -56,20 +83,19 @@
                             {% if entry.email_share_list.__len__() == 1 %}
                                 <div class="btn-group" role="group">
                                     <button id="sendbtn" class="btn btn-primary sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}">
-                                        <span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}
+                                        {{ icon('send') }} {{entry.email_share_list[0]['text']}}
                                     </button>
                                 </div>
                             {% else %}
                                 <div class="btn-group" role="group">
                                     <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="glyphicon glyphicon-send"></span>{{ _('Send to eReader') }}
-                                        <span class="caret"></span>
+                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ icon('send') }}{{ _('Send to eReader') }}
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="send-to-ereader">
                                         {% for format in entry.email_share_list %}
                                             <li>
-                                                <a class="sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{ format['text'] }}</a>
+                                                <a class="dropdown-item sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{ format['text'] }}</a>
                                             </li>
                                         {% endfor %}
                                     </ul>
@@ -81,22 +107,20 @@
                         <div class="btn-group" role="group">
                             {% if entry.reader_list|length > 1 %}
                                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-book"></span> {{ _('Read in Browser') }}
-                                    <span class="caret"></span>
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ icon('book') }} {{ _('Read in Browser') }}
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="read-in-browser">
                                     {% for format in entry.reader_list %}
                                         <li><a target="_blank"
-                                               href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a>
+                                               href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}" class="dropdown-item">{{ format }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
                             {% else %}
                                 <a target="_blank"
                                    href="{{ url_for('web.read_book', book_id=entry.id, book_format=entry.reader_list[0]) }}"
-                                   id="readbtn" class="btn btn-primary" role="button"><span
-                                        class="glyphicon glyphicon-book"></span> {{ _('Read in Browser') }}
+                                   id="readbtn" class="btn btn-primary" role="button">{{ icon('book') }} {{ _('Read in Browser') }}
                                     - {{ entry.reader_list[0] }}</a>
                             {% endif %}
                         </div>
@@ -104,13 +128,12 @@
                     {% if entry.audio_entries|length > 0 and current_user.role_viewer() %}
                         <div class="btn-group" role="group">
                             {% if entry.audio_entries|length > 1 %}
-                                <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-music"></span> {{ _('Listen in Browser') }}
-                                    <span class="caret"></span>
+                                <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ icon('music') }} {{ _('Listen in Browser') }}
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
                                     {% for format in entry.reader_list %}
-                                        <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a>
+                                        <li><a target="_blank" class="dropdown-item" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -119,50 +142,23 @@
                                     {% for format in entry.data %}
                                         {% if format.format|lower in entry.audio_entries %}
                                             <li><a target="_blank"
-                                                   href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{ format.format|lower }}</a>
+                                                   href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}" class="dropdown-item">{{ format.format|lower }}</a>
                                             </li>
                                         {% endif %}
                                     {% endfor %}
                                 </ul>
                             {% else %}
-                                <a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=entry.audio_entries[0]) }}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{ _('Listen in Browser') }} - {{ entry.audio_entries[0] }}</a>
+                                <a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=entry.audio_entries[0]) }}" id="listenbtn" class="btn btn-primary" role="button">{{ icon('music') }} {{ _('Listen in Browser') }} - {{ entry.audio_entries[0] }}</a>
                             {% endif %}
                         </div>
                     {% endif %}
                 </div>
             </div>
-            <h2 id="title">{{ entry.title }}</h2>
-            <p class="author">
-                {% for author in entry.ordered_authors %}
-                    <a href="{{ url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{ author.name.replace('|',',') }}</a>
-                    {% if not loop.last %}
-                        &amp;
-                    {% endif %}
-                {% endfor %}
-            </p>
-            {% if entry.ratings.__len__() > 0 %}
-                <div class="rating">
-                    <p>
-                        {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
-                            <span class="glyphicon glyphicon-star good"></span>
-                            {% if loop.last and loop.index < 5 %}
-                                {% for numer in range(5 - loop.index) %}
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                {% endfor %}
-                            {% endif %}
-                        {% endfor %}
-                    </p>
-                </div>
-            {% endif %}
-            {% if entry.series|length > 0 %}
-                <p>{{ _("Book %(index)s of %(range)s", index=entry.series_index|formatfloat(2), range=(url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)|escapedlink(entry.series[0].name))|safe) }}</p>
-
-            {% endif %}
 
             {% if entry.languages|length > 0 %}
                 <div class="languages">
                     <p>
-                        <span class="label label-default">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+                        <span class="badge rounded-pill border text-body">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
                     </p>
                 </div>
             {% endif %}
@@ -170,14 +166,14 @@
             {% if entry.identifiers|length > 0 %}
                 <div class="identifiers">
                     <p>
-                        <span class="glyphicon glyphicon-link"></span>
+                        {{ icon('link') }}
                         {% for identifier in entry.identifiers %}
                             {% set identifier_link = identifier.__repr__() %}
                             {% if identifier_link != identifier.val %}
-                                <a href="{{ identifier_link|escape }}" target="_blank" class="btn btn-xs btn-success"
+                                <a href="{{ identifier_link|escape }}" target="_blank" class="btn btn-sm btn-outline-secondary"
                                    role="button">{{ identifier.format_type() }}</a>
                             {% else %}
-                                <span class="btn btn-xs btn-success" role="button">{{ identifier.format_type() }}</span>
+                                <span class="btn btn-sm btn-outline-secondary" role="button">{{ identifier.format_type() }}</span>
                             {% endif %}
                         {% endfor %}
                     </p>
@@ -188,11 +184,11 @@
 
                 <div class="tags">
                     <p>
-                        <span class="glyphicon glyphicon-tags"></span>
+                        {{ icon('tags') }}
 
                         {% for tag in entry.tags %}
                             <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}"
-                               class="btn btn-xs btn-info" role="button">{{ tag.name }}</a>
+                               class="badge rounded-pill border text-body text-decoration-none" role="button">{{ tag.name }}</a>
                         {% endfor %}
                     </p>
 
@@ -227,9 +223,9 @@
                                 {% else %}
                                     {% if c.datatype == 'bool' %}
                                         {% if column.value == true %}
-                                            <span class="glyphicon glyphicon-ok"></span>
+                                            {{ icon('check') }}
                                         {% else %}
-                                            <span class="glyphicon glyphicon-remove"></span>
+                                            {{ icon('x') }}
                                         {% endif %}
                                     {% else %}
                                         {% if c.datatype == 'float' %}
@@ -260,10 +256,10 @@
                     <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id) }}"
                           method="POST">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <label class="block-label">
+                        <label class="form-label block-label">
                             <input id="have_read_cb" type="checkbox"
                                    {% if entry.read_status %}checked{% endif %}>
-                            <span data-toggle="tooltip" title="{{_('Mark Book as Read or Unread')}}">{{ _('Read') }}</span>
+                            <span data-bs-toggle="tooltip" title="{{_('Mark Book as Read or Unread')}}">{{ _('Read') }}</span>
                         </label>
                     </form>
                     </p>
@@ -272,10 +268,10 @@
                         <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id) }}"
                               method="POST">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <label class="block-label">
+                            <label class="form-label block-label">
                                 <input id="archived_cb" type="checkbox"
                                        {% if entry.is_archived %}checked{% endif %}>
-                                <span data-toggle="tooltip" title="{{_('Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader')}}">{{ _('Archive') }}</span>
+                                <span data-bs-toggle="tooltip" title="{{_('Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader')}}">{{ _('Archive') }}</span>
                             </label>
                         </form>
                         </p>
@@ -299,19 +295,18 @@
                         <div id="shelf-actions" class="btn-toolbar" role="toolbar">
                             <div class="btn-group dropup" role="group" aria-label="Add to shelves">
                                 <button id="add-to-shelf" type="button"
-                                        class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown"
+                                        class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-list"></span> {{ _('Add to shelf') }}
-                                    <span class="caret"></span>
+                                    {{ icon('list') }} {{ _('Add to shelf') }}
                                 </button>
                                 <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
                                     {% for shelf in g.shelves_access %}
                                         {% if not shelf.id in books_shelfs and ( not shelf.is_public or current_user.role_edit_shelfs() ) %}
                                             <li>
-                                                <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                                <a class="dropdown-item" data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                                                    data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                                                    data-shelf-action="add"
-                                                >
+                                                   >
                                                     {{ shelf.name }}{% if shelf.is_public == 1 %}
                                                         {{ _('(Public)') }}{% endif %}
                                                 </a>
@@ -327,18 +322,16 @@
                                         {% if shelf.id in books_shelfs %}
                                             <a data-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                                                data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                                               class="btn btn-sm btn-default" role="button"
+                                               class="btn btn-sm btn-outline-secondary" role="button"
                                                data-shelf-action="remove"
                                             >
-								              <span {% if not shelf.is_public or current_user.role_edit_shelfs() %}
-								                  class="glyphicon glyphicon-remove"
-								              {% endif %}></span> {{ shelf.name }}{% if shelf.is_public == 1 %} {{ _('(Public)') }}{% endif %}
+                                              {% if not shelf.is_public or current_user.role_edit_shelfs() %}{{ icon('x') }}{% endif %} {{ shelf.name }}{% if shelf.is_public == 1 %} {{ _('(Public)') }}{% endif %}
                                             </a>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
                             </div>
-                            <div id="shelf-action-errors" class="pull-left" role="alert"></div>
+                            <div id="shelf-action-errors" class="float-start" role="alert"></div>
                         </div>
                     {% endif %}
 
@@ -347,10 +340,9 @@
                     <div class="col-sm-12">
                         <div class="btn-group" role="group" aria-label="Edit/Delete book">
                             <a href="{{ url_for('edit-book.show_edit_book', book_id=entry.id) }}"
-                               class="btn btn-sm btn-primary" id="edit_book" role="button"><span
-                                    class="glyphicon glyphicon-edit"></span> {{ _('Edit Metadata') }}</a>
+                               class="btn btn-sm btn-primary" id="edit_book" role="button">{{ icon('cog') }} {{ _('Edit Metadata') }}</a>
                         </div>
-                        <div class="btn btn-default" data-back="{{ url_for('web.index') }}" id="back">{{_('Cancel')}}</div>
+                        <div class="btn btn-outline-secondary" data-back="{{ url_for('web.index') }}" id="back">{{_('Cancel')}}</div>
                    </div>
                 {% endif %}
         </div>
@@ -368,9 +360,9 @@
     </li>
 </script>
 <script type="text/template" id="template-shelf-remove">
-    <a data-href="<%= remove %>" data-add-href="<%= add %>" class="btn btn-sm btn-default"
+    <a data-href="<%= remove %>" data-add-href="<%= add %>" class="btn btn-sm btn-outline-secondary"
        data-shelf-action="remove">
-        <span class="glyphicon glyphicon-remove"></span> <%= content %>
+        {{ icon('x') }} <%= content %>
     </a>
 </script>
 <script src="{{ url_for('static', filename='js/details.js') }}"></script>

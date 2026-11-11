@@ -30,26 +30,6 @@ THEMES = (
         "show_upload_loader": False
     },
     {
-        "id": 1,
-        "identifier": "caliblur",
-        "label": "caliBlur! Dark Theme",
-        "configurable": True,
-        "css_files": (
-            "css/caliBlur.css",
-            "css/caliBlur_override.css"
-        ),
-        "js_files": (
-            "js/libs/jquery.visible.min.js",
-            "js/libs/compromise.min.js",
-            "js/libs/readmore.min.js",
-            "js/caliBlur.js"
-        ),
-        "body_class": "blur",
-        "show_home_shortcuts": True,
-        "profile_dropdown": True,
-        "show_upload_loader": True
-    },
-    {
         "id": 2,
         "identifier": "simple",
         "label": "Simple Theme",

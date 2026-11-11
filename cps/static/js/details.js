@@ -18,7 +18,7 @@
 /* global _ */
 
 function handleResponse (data) {
-    $(".row-fluid.text-center").remove();
+    $(".row.text-center").remove();
     $("#flash_danger").remove();
     $("#flash_success").remove();
     if (!jQuery.isEmptyObject(data)) {
@@ -29,7 +29,7 @@ function handleResponse (data) {
             });
         } else {
             data.forEach(function (item) {
-                $(".navbar").after('<div class="row-fluid text-center">' +
+                $(".navbar").after('<div class="row text-center">' +
                     '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                     '</div>');
             });
@@ -60,7 +60,7 @@ $("#have_read_cb").on("change", function() {
             var data = [{type:"danger", message:response.responseText}]
             // $("#flash_success").parent().remove();
             $("#flash_danger").remove();
-            $(".row-fluid.text-center").remove();
+            $(".row.text-center").remove();
             if (!jQuery.isEmptyObject(data)) {
                 $("#have_read_cb").prop("checked", !$("#have_read_cb").prop("checked"));
                 if($("#bookDetailsModal").is(":visible")) {
@@ -71,7 +71,7 @@ $("#have_read_cb").on("change", function() {
                 } else
                 {
                     data.forEach(function (item) {
-                        $(".navbar").after('<div class="row-fluid text-center" >' +
+                        $(".navbar").after('<div class="row text-center" >' +
                             '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                             '</div>');
                     });
@@ -89,36 +89,6 @@ $("#archived_cb").on("change", function() {
     $(this).closest("form").submit();
 });
 
-$(document).on("click", ".downloadBtn > #btnGroupDrop1", function (e) {
-    var $button = $(this);
-    var $group = $button.closest(".downloadBtn");
-    var $menu = $group.children("ul.dropdown-menu");
-    var isOpen = $button.attr("aria-expanded") === "true";
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    $(".downloadBtn.open").not($group).removeClass("open").children("ul.dropdown-menu").hide();
-    $(".downloadBtn > #btnGroupDrop1").not($button).attr("aria-expanded", "false");
-
-    if (isOpen) {
-        $group.removeClass("open");
-        $button.attr("aria-expanded", "false");
-        $menu.hide();
-    } else {
-        $group.addClass("open");
-        $button.attr("aria-expanded", "true");
-        $menu.removeClass("offscreen");
-        $menu.show();
-    }
-});
-
-$(document).on("click", function (e) {
-    if ($(e.target).closest(".downloadBtn").length === 0) {
-        $(".downloadBtn.open").removeClass("open").children("ul.dropdown-menu").hide();
-        $(".downloadBtn > #btnGroupDrop1").attr("aria-expanded", "false");
-    }
-});
 
 (function() {
     var templates = {

@@ -23,26 +23,6 @@ if ($(".tiny_editor").length) {
     });
 }
 
-$(".datepicker").datepicker({
-    format: "yyyy-mm-dd",
-    language: language
-}).on("change", function () {
-    // Show localized date over top of the standard YYYY-MM-DD date
-    var pubDate;
-    var results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
-    if (results) {
-        pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
-        $(this).next('input')
-            .val(pubDate.toLocaleDateString(language.replaceAll("_","-")))
-            .removeClass("hidden");
-    }
-}).trigger("change");
-
-$(".datepicker_delete").click(function() {
-    var inputs = $(this).parent().siblings('input');
-    $(inputs[0]).data('datepicker').clearDates();
-    $(inputs[1]).addClass('hidden');
-});
 
 
 /*
@@ -238,8 +218,7 @@ $("#search").on("change input.typeahead:selected", function(event) {
         $("#include_tag option:selected").each(function () {
             $("#exclude_tag").find("[value=" + $(this).val() + "]").prop("disabled", true);
         });
-        $("#include_tag").selectpicker("refresh");
-        $("#exclude_tag").selectpicker("refresh");
+
     });
 });
 

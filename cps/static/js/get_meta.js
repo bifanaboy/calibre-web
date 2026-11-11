@@ -78,7 +78,7 @@ $(function () {
         var line = '<tr>';
         line += '<td><input type="text" class="form-control" name="identifier-type-'+ name +'" required="required" placeholder="' + _("Identifier Type") +'" value="'+ name +'"></td>';
         line += '<td><input type="text" class="form-control" name="identifier-val-'+ name +'" required="required" placeholder="' + _("Identifier Value") +'" value="'+ value +'"></td>';
-        line += '<td><a class="btn btn-default" onclick="removeIdentifierLine(this)">'+_("Remove")+'</a></td>';
+        line += '<td><a class="btn btn-outline-secondary" onclick="removeIdentifierLine(this)">'+_("Remove")+'</a></td>';
         line += '</tr>';
         $("#identifier-table").append(line);
     }
@@ -125,7 +125,7 @@ $(function () {
                     if (provider.active) {
                         checked = "checked";
                     }
-                    var $provider_button = '<input type="checkbox" id="show-' + provider.name + '" class="pill" data-initial="' + provider.initial + '" data-control="' + provider.id + '" ' + checked + '><label for="show-' + provider.name + '">' + provider.name + ' <span class="glyphicon glyphicon-ok"></span></label>'
+                    var $provider_button = '<input type="checkbox" id="show-' + provider.name + '" class="pill" data-initial="' + provider.initial + '" data-control="' + provider.id + '" ' + checked + '><label for="show-' + provider.name + '">' + provider.name + ' <svg class="cw-ico cw-ico-check" aria-hidden="true"><use href="#cw-i-check"/></svg></label>'
                     $("#metadata_provider").append($provider_button);
                 });
             },

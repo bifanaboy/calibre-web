@@ -53,7 +53,7 @@
 
   <div class="cw-grid">
     {% for entry in entries %}
-      {% with show_music=true %}{% include '_book_card.html' %}{% endwith %}
+      {% with show_music=true %}{% include theme('_book_card.html') %}{% endwith %}
     {% endfor %}
   </div>
 </div>

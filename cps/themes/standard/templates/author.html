@@ -33,7 +33,7 @@
     </div>
   <div class="cw-grid">
     {% for entry in entries %}
-      {% with show_music=true, cover_alt=author.name if author is not none else none %}{% include '_book_card.html' %}{% endwith %}
+      {% with show_music=true, cover_alt=author.name if author is not none else none %}{% include theme('_book_card.html') %}{% endwith %}
     {% endfor %}
   </div>
 

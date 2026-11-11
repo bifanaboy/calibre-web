@@ -17,14 +17,15 @@
 
 var direction = $("#asc").data('order');  // 0=Descending order; 1= ascending order
 
-var $list = $("#list").isotope({
-    itemSelector: ".book",
-    layoutMode: "fitRows",
-    getSortData: {
-        title: ".title"
-    },
-});
+var $list = $("#list");
 
+function sortGrid(ascending) {
+    $($list.children(".book").get().sort(function(a, b) {
+        var left = $(a).find(".title").text();
+        var right = $(b).find(".title").text();
+        return left.localeCompare(right) * (ascending ? 1 : -1);
+    })).appendTo($list);
+}
 
 $("#desc").click(function() {
     if (direction === 0) {
@@ -41,11 +42,7 @@ $("#desc").click(function() {
         url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
     });
-    // invert sorting order to make already inverted start order working
-    $list.isotope({
-        sortBy: "name",
-        sortAscending: !$list.data('isotope').options.sortAscending
-    });
+    sortGrid(false);
     direction = 0;
 });
 
@@ -64,10 +61,7 @@ $("#asc").click(function() {
         url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"asc\"}}",
     });
-    $list.isotope({
-        sortBy: "name",
-        sortAscending: !$list.data('isotope').options.sortAscending
-    });
+    sortGrid(true);
     direction = 1;
 });
 
@@ -75,19 +69,16 @@ $("#all").click(function() {
     $(".char").removeClass("active");
     $("#all").addClass("active");
     // go through all elements and make them visible
-    $list.isotope({ filter: function() {
-        return true;
-    }
-    });
+    $list.children(".book").show();
 });
 
 $(".char").click(function() {
     $(".char").removeClass("active");
     $(this).addClass("active");
     $("#all").removeClass("active");
-    var character = this.innerText;
-    $list.isotope({ filter: function() {
-        return this.attributes["data-id"].value.charAt(0).toUpperCase() === character;
-    }
+    var character = $(this).text();
+    $list.children(".book").each(function() {
+        var name = $(this).attr("data-id") || "";
+        $(this).toggle(name.charAt(0).toUpperCase() === character);
     });
 });

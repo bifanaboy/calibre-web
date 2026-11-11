@@ -14,7 +14,13 @@
     <!-- Bootstrap -->
     <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <script>
+      const savedTheme = localStorage.getItem("cw-theme");
+      const theme = savedTheme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.dataset.bsTheme = theme;
+    </script>
+    <link href="{{ url_for('static', filename='css/libs/bootstrap5.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
     {% for theme_css in g.theme['css_files'] %}
       <link href="{{ url_for('static', filename=theme_css) }}" rel="stylesheet" media="screen">
@@ -26,10 +32,10 @@
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
-  <div class="row display-flex">
+  <div class="cw-grid">
 
     {% for entry in entries %}
-    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+    <div class="book">
 
       <div class="meta">
         <p title="{{entry.Books.title}}" class="title">{{entry.Books.title|shortentitle}}</p>
@@ -68,8 +74,6 @@
     {% endfor %}
   </div>
 </div>
-    <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
 {% endblock %}
   </body>
 </html>

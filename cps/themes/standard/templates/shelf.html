@@ -15,7 +15,7 @@
       </form>
       {% if entries.__len__() %}
       <a id="order_shelf" href="{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Arrange books manually') }} </a>
-      <button id="toggle_order_shelf" data-alt-text="{% if status == "on" %}{{_('Disable Change order')}}{% else %}{{_('Enable Change order')}}{% endif %}" data-view="shelf" class="btn btn-primary{% if status == 'on' %} dummy">{{ _('Enable Change order') }}{% else%}">{{ _('Disable Change order') }}{% endif %}</button>
+      <button id="toggle_order_shelf" data-alt-text="{% if status == 'on' %}{{_('Enable Change order')}}{% else %}{{_('Disable Change order')}}{% endif %}" data-view="shelf" class="btn btn-primary{% if status == 'on' %} dummy{% endif %}">{% if status == 'on' %}{{_('Disable Change order')}}{% else %}{{_('Enable Change order')}}{% endif %}</button>
         <div class="filterheader d-none d-md-block">
           <a data-bs-toggle="tooltip" title="{{_('Sort according to book date, newest first')}}" id="new" class="btn btn-primary {% if order == "new" %} active{% endif %}{% if status == "on" %} disabled{% endif %}" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='new')}}">{{ icon('book') }} {{ icon('calendar') }}{{ icon('sort') }}</a>
           <a data-bs-toggle="tooltip" title="{{_('Sort according to book date, oldest first')}}" id="old" class="btn btn-primary {% if order == 'old' %} active{% endif %}{% if status == 'on' %} disabled{% endif %}" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='old')}}">{{ icon('book') }} {{ icon('calendar') }}{{ icon('sort') }}</a>

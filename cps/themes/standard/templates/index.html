@@ -18,6 +18,7 @@
     {% if page == 'hot' %}
       <a data-bs-toggle="tooltip" title="{{_('Sort ascending according to download count')}}" id="hot_asc" class="btn btn-primary{% if order == "hotasc" %} active{% endif%}" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='hotasc')}}">{{ icon('sort') }}</a>
       <a data-bs-toggle="tooltip" title="{{_('Sort descending according to download count')}}" id="hot_desc" class="btn btn-primary{% if order == "hotdesc" %} active{% endif%}" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='hotdesc')}}">{{ icon('sort') }}</a>
+    {% else %}
       <a data-bs-toggle="tooltip" title="{{_('Sort according to book date, newest first')}}" id="new" class="btn btn-primary{% if order == "new" %} active{% endif%}" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='new')}}">{{ icon('book') }} {{ icon('calendar') }}{{ icon('sort') }}</a>
       <a data-bs-toggle="tooltip" title="{{_('Sort according to book date, oldest first')}}" id="old" class="btn btn-primary{% if order == "old" %} active{% endif%}" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='old')}}">{{ icon('book') }} {{ icon('calendar') }}{{ icon('sort') }}</a>
       <a data-bs-toggle="tooltip" title="{{_('Sort title in alphabetical order')}}" id="asc" class="btn btn-primary{% if order == "abc" %} active{% endif%}" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='abc')}}">{{ icon('book') }}{{ icon('sort') }}</a>

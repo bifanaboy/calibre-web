@@ -421,12 +421,6 @@ $(function() {
         });
     }
 
-    $(".discover .row.display-flex").isotope({
-        // options
-        itemSelector : ".book",
-        layoutMode : "fitRows"
-    });
-
     if ($(".load-more").length && $(".next").length) {
         var $loadMore = $(".load-more .cw-grid").infiniteScroll({
             debug: false,
@@ -840,10 +834,6 @@ $(function() {
         }
     });
 
-    $(window).resize(function() {
-        $(".discover .row.display-flex").isotope("layout");
-    });
-
     $("#import_ldap_users").click(function() {
         $("#DialogHeader").addClass("d-none");
         $("#DialogFinished").addClass("d-none");
@@ -866,7 +856,6 @@ $(function() {
         $(this).parent().find("a.author-name").slice($(this).data("authors-max")).toggle();
         $(this).parent().find("span.author-hidden-divider").toggle();
         $(this).html() === $(this).data("collapse-caption") ? $(this).html("(...)") : $(this).html($(this).data("collapse-caption"));
-        $(".discover .row.display-flex").isotope("layout");
     });
 
     $(".update-view").click(function(e) {

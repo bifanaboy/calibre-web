@@ -966,23 +966,28 @@ function seriesIndexFormatter(value, row) {
 
 function editLinkFormatter(value, row) {
     var base = $("#books-table").attr("data-edit-url");
-    return formatEditLink(value, row, base);
+    // `this` is the column; values of columns with data-escape="true" arrive escaped.
+    return formatEditLink(value, row, base, this && this.escape === true);
 }
 
 function userEditLinkFormatter(value, row) {
     var base = $("#user-table").attr("data-edit-url");
-    return formatEditLink(value, row, base);
+    return formatEditLink(value, row, base, this && this.escape === true);
 }
 
-function formatEditLink(value, row, base) {
+function formatEditLink(value, row, base, alreadyEscaped) {
     if (!base || row.id === undefined) return value;
-    return '<a href="' + base.replace(/\/0$/, "/" + encodeURIComponent(row.id)) + '">' +
-        (value === null || value === undefined || value === "" ? "Edit" : $('<div>').text(value).html()) +
-        '</a>';
+    var text;
+    if (value === null || value === undefined || value === "") {
+        text = "Edit";
+    } else {
+        text = alreadyEscaped ? value : $('<div>').text(value).html();
+    }
+    return '<a href="' + base.replace(/\/0$/, "/" + encodeURIComponent(row.id)) + '">' + text + '</a>';
 }
 
 function ratingEditFormatter(value, row) {
-    return editLinkFormatter(value ? value / 2 : value, row);
+    return editLinkFormatter.call(this, value ? value / 2 : value, row);
 }
 
 

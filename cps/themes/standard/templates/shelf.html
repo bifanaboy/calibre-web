@@ -27,7 +27,6 @@
           <a data-bs-toggle="tooltip" title="{{_('Sort according to publishing date, oldest first')}}" id="pub_old" class="btn btn-primary {% if order == 'pubold' %} active{% endif %}{% if status == "on" %} disabled{% endif %}" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='pubold')}}">{{ icon('calendar') }}{{ icon('sort') }}</a>
           <a data-bs-toggle="tooltip" title="{{_('Sort according to book added to shelf, newest first')}}" id="shelf_new" class="btn btn-primary {% if order == 'shelfnew' %} active{% endif %}{% if status == "on" %} disabled{% endif %}" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='shelfnew')}}">{{ icon('list') }}{{ icon('sort') }}</a>
           <a data-bs-toggle="tooltip" title="{{_('Sort according to book added to shelf, oldest first')}}" id="shelf_old" class="btn btn-primary {% if order == 'shelfold' %} active{% endif %}{% if status == "on" %} disabled{% endif %}" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='shelfold')}}">{{ icon('list') }}{{ icon('sort') }}</a>
-          >
         </div>
       {% endif %}
     {% endif %}

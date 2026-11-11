@@ -73,7 +73,7 @@ var authors = new Bloodhound({
     },
 });
 
-$(".form-group #authors").typeahead(
+$("#authors").typeahead(
     {
         highlight: true,
         minLength: 1,
@@ -105,7 +105,7 @@ var series = new Bloodhound({
         }*/
     }
 });
-$(".form-group #series").typeahead(
+$("#series").typeahead(
     {
         highlight: true,
         minLength: 0,
@@ -133,7 +133,7 @@ var tags = new Bloodhound({
     }
 });
 
-$(".form-group #tags").typeahead(
+$("#tags").typeahead(
     {
         highlight: true,
         minLength: 0,
@@ -164,7 +164,7 @@ var languages = new Bloodhound({
     }
 });
 
-$(".form-group #languages").typeahead(
+$("#languages").typeahead(
     {
         highlight: true, minLength: 0,
         hint: true
@@ -189,7 +189,7 @@ var publishers = new Bloodhound({
     }
 });
 
-$(".form-group #publisher").typeahead(
+$("#publisher").typeahead(
     {
         highlight: true, minLength: 0,
         hint: true
